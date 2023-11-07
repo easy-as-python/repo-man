@@ -4,7 +4,7 @@ import argparse
 import configparser
 import sys
 from pathlib import Path
-from typing import NoReturn
+from typing import NoReturn, Union
 
 
 FAIL = "\033[91m"
@@ -12,7 +12,7 @@ ENDC = "\033[0m"
 REPO_TYPES_CFG = "repo-types.cfg"
 
 
-def check_if_allowed(path: Path) -> bool | NoReturn:
+def check_if_allowed(path: Path) -> Union[bool, NoReturn]:
     if REPO_TYPES_CFG not in (str(item) for item in path.iterdir()):
         print(f"{FAIL}The current directory is not configured for repository management{ENDC}")
         sys.exit(1)
