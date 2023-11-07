@@ -1,0 +1,150 @@
+name: Packaging
+
+on:
+  - push
+
+jobs:
+  format:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install tox
+        run: python -m pip install tox
+
+      - name: Run black
+        run: tox -e format
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install tox
+        run: python -m pip install tox
+
+      - name: Run flake8
+        run: tox -e lint
+
+  typecheck:
+    name: Type check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install tox
+        run: python -m pip install tox
+
+      - name: Run mypy
+        run: python -m tox -e typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - version: "3.12"
+            toxenv: "py312"
+          - version: "3.9"
+            toxenv: "py39"
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4.0.0
+        with:
+          python-version: ${{ matrix.python.version }}
+
+      - name: Install tox
+        run: python -m pip install tox
+
+      - name: Run pytest
+        run: tox -e ${{ matrix.python.toxenv }}
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      - name: Install tox
+        run: python -m pip install tox
+
+      - name: Build docs
+        run: tox -e docs
+
+  build_source_dist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install build
+        run: python -m pip install build
+
+      - name: Run build
+        run: python -m build --sdist
+
+      - uses: actions/upload-artifact@v3
+        with:
+          path: dist/*.tar.gz
+
+  publish:
+    needs: [format, lint, typecheck, test, docs]
+    if: startsWith(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      - name: Install pypa/build
+        run: python -m pip install build
+
+      - name: Build distribution
+        run: python -m build --outdir dist/
+
+      - name: Publish distribution to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository_url: https://test.pypi.org/legacy/
+
+      - name: Publish distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+      - name: Publish distribution to GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/repoman-*.whl
+            dist/repoman-*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
