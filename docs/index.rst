@@ -10,6 +10,13 @@ Manage repositories of different flavors.
 
    reference/modules
 
+.. toctree::
+   :glob:
+   :caption: Architecture decision records:
+   :hidden:
+
+   architecture/decisions/*
+
 If you work in open source or as a cross-team individual contributor in your organization,
 you may have dozens of repositories cloned to your local machine.
 Those repositories may be of several different *flavors*, exhibiting a particular file structure or purpose.
