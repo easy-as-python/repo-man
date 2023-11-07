@@ -100,9 +100,8 @@ def main():
     check_if_allowed(path)
 
     parser = argparse.ArgumentParser(
-        prog="./thing",
+        prog="repoman",
         description="Manage repositories of different types",
-        epilog="Cool, man.",
     )
 
     configure_arguments(parser)
