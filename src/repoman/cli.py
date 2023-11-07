@@ -14,9 +14,7 @@ REPO_TYPES_CFG = "repo-types.cfg"
 
 def check_if_allowed(path: Path) -> bool | NoReturn:
     if REPO_TYPES_CFG not in (str(item) for item in path.iterdir()):
-        print(
-            f"{FAIL}The current directory is not configured for repository management{ENDC}"
-        )
+        print(f"{FAIL}The current directory is not configured for repository management{ENDC}")
         sys.exit(1)
 
     return True
@@ -90,7 +88,7 @@ def check_missing_repos(path: Path, repo_types: dict[str, set[str]]) -> None | N
     if missing:
         print(f"{FAIL}The following repositories are configured but do not exist:")
         for repo in missing:
-            print("\t{repo}")
+            print(f"\t{repo}")
         sys.exit(1)
 
     return None
@@ -128,7 +126,11 @@ def main():
 
     if args.unconfigured:
         for directory in sorted(path.iterdir()):
-            if directory.is_dir() and str(directory) not in repo_types["all"] and str(directory) not in repo_types["ignore"]:
+            if (
+                directory.is_dir()
+                and str(directory) not in repo_types["all"]
+                and str(directory) not in repo_types["ignore"]
+            ):
                 print(directory)
 
     if args.list:
@@ -143,4 +145,3 @@ def main():
                     if repo in seen:
                         print(repo)
                     seen.add(repo)
-
