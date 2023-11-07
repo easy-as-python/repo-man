@@ -77,7 +77,7 @@ def parse_repo_types() -> dict[str, set[str]]:
     return repo_types
 
 
-def check_missing_repos(path: Path, repo_types: dict[str, set[str]]) -> None | NoReturn:
+def check_missing_repos(path: Path, repo_types: dict[str, set[str]]) -> Union[None, NoReturn]:
     missing = set()
     directories = {str(directory) for directory in path.iterdir()}
 
