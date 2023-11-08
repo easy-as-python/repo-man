@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.0.3] - 2023-11-07
+
+### Changed
+
+- Listing repositories of a given flavor is now the `list` subcommand
+
+### Added
+
+- List flavors of a given repository using the `flavors` subcommand
+- Configure a repository for a flavor using the `add` subcommand
+
 ## [0.0.2] - 2023-11-07
 
 ### Fixed

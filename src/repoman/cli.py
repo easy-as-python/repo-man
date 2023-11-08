@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import argparse
 import configparser
 import sys
@@ -20,20 +18,49 @@ def check_if_allowed(path: Path) -> Union[bool, NoReturn]:
     return True
 
 
-def configure_arguments(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument(
-        "-l",
-        "--list",
-        action="store_true",
-        help="List repositories of the specified type",
-    )
+def configure_arguments(parser: argparse.ArgumentParser, repo_types: dict[str, set[str]]) -> None:
+    subparsers = parser.add_subparsers(description="Subcommands for managing repositories", dest="subcommand")
 
-    parser.add_argument(
+    # List repos
+    list_parser = subparsers.add_parser("list", help="List matching repositories")
+
+    list_parser.add_argument(
         "-t",
         "--type",
+        required=True,
+        choices=sorted(set(repo_types.keys()) - {"ignore", "all"}),
+        metavar="TYPE",
         help="The type of repository to manage",
     )
 
+    # Add a new repo
+    add_parser = subparsers.add_parser("add", help="Add a new repository")
+
+    add_parser.add_argument(
+        "repository",
+        choices=[str(directory) for directory in Path(".").iterdir() if directory.is_dir()],
+        metavar="REPOSITORY",
+        help="The name of the repository",
+    )
+
+    add_parser.add_argument(
+        "-t",
+        "--type",
+        required=True,
+        help="The type of the repository",
+    )
+
+    # Check a repo
+    flavor_parser = subparsers.add_parser("flavors", help="List the configured types for a repository")
+
+    flavor_parser.add_argument(
+        "repository",
+        choices=[str(directory) for directory in Path(".").iterdir() if directory.is_dir()],
+        metavar="REPOSITORY",
+        help="The name of the repository",
+    )
+
+    # Inspect repos
     parser.add_argument(
         "-k",
         "--known",
@@ -63,8 +90,7 @@ def configure_arguments(parser: argparse.ArgumentParser) -> None:
     )
 
 
-def parse_repo_types() -> dict[str, set[str]]:
-    config = configparser.ConfigParser()
+def parse_repo_types(config: configparser.ConfigParser) -> dict[str, set[str]]:
     config.read(REPO_TYPES_CFG)
 
     repo_types: dict[str, set[str]] = {"all": set()}
@@ -77,7 +103,7 @@ def parse_repo_types() -> dict[str, set[str]]:
     return repo_types
 
 
-def check_missing_repos(path: Path, repo_types: dict[str, set[str]]) -> Union[None, NoReturn]:
+def check_missing_repos(path: Path, repo_types: dict[str, set[str]]) -> None:
     missing = set()
     directories = {str(directory) for directory in path.iterdir()}
 
@@ -94,34 +120,58 @@ def check_missing_repos(path: Path, repo_types: dict[str, set[str]]) -> Union[No
     return None
 
 
-def main():
-    path = Path(".")
+def handle_list(
+    path: Path, config: configparser.ConfigParser, args, repo_types: dict[str, set[str]]
+) -> Union[None, NoReturn]:
+    if args.type not in repo_types:
+        print(f"\n{FAIL}Unknown type {args.type}. Valid types are:{ENDC}")
+        for repo_type in repo_types:
+            if repo_type != "all" and repo_type != "ignore":
+                print(f"\t{repo_type}")
+        sys.exit(1)
 
-    check_if_allowed(path)
+    for repo in repo_types[args.type]:
+        print(repo)
 
-    parser = argparse.ArgumentParser(
-        prog="repoman",
-        description="Manage repositories of different types",
-    )
+    return None
 
-    configure_arguments(parser)
-    args = parser.parse_args()
-    repo_types = parse_repo_types()
-    check_missing_repos(path, repo_types)
 
+def handle_add(path: Path, config: configparser.ConfigParser, args, repo_types: dict[str, set[str]]) -> None:
+    if args.type in config:
+        original_config = config[args.type]["known"]
+    else:
+        original_config = ""
+        config.add_section(args.type)
+
+    if "known" not in config[args.type] or args.repository not in config[args.type]["known"].split("\n"):
+        config.set(args.type, "known", f"{original_config}\n{args.repository}")
+
+    with open(REPO_TYPES_CFG, "w") as config_file:
+        config.write(config_file)
+
+    return None
+
+
+def handle_flavors(path: Path, config: configparser.ConfigParser, args, repo_types: dict[str, set[str]]) -> None:
+    found = set()
+    for section in config.sections():
+        if section == "ignore":
+            continue
+        if args.repository in config[section]["known"].split("\n"):
+            found.add(section)
+    for repository in sorted(found):
+        print(repository)
+
+    return None
+
+
+def handle_meta(path: Path, config: configparser.ConfigParser, args, repo_types: dict[str, set[str]]) -> None:
     if args.known:
         known_repo_types = sorted(
             [repo_type for repo_type in repo_types if repo_type != "all" and repo_type != "ignore"]
         )
         for repo_type in known_repo_types:
             print(repo_type)
-
-    if args.type and args.type not in repo_types:
-        print(f"\n{FAIL}Unknown type {args.type}. Valid types are:{ENDC}")
-        for repo_type in repo_types:
-            if repo_type != "all":
-                print(f"\t{repo_type}")
-        sys.exit(1)
 
     if args.unconfigured:
         for directory in sorted(path.iterdir()):
@@ -132,10 +182,6 @@ def main():
             ):
                 print(directory)
 
-    if args.list:
-        for repo in repo_types[args.type]:
-            print(repo)
-
     if args.duplicates:
         seen = set()
         for repo_type in repo_types:
@@ -144,3 +190,29 @@ def main():
                     if repo in seen:
                         print(repo)
                     seen.add(repo)
+
+
+def main():
+    path = Path(".")
+
+    check_if_allowed(path)
+
+    parser = argparse.ArgumentParser(
+        prog="repoman",
+        description="Manage repositories of different types",
+    )
+
+    config = configparser.ConfigParser()
+    repo_types = parse_repo_types(config)
+    configure_arguments(parser, repo_types)
+    args = parser.parse_args()
+    check_missing_repos(path, repo_types)
+
+    if args.subcommand == "list":
+        handle_list(path, config, args, repo_types)
+    elif args.subcommand == "add":
+        handle_add(path, config, args, repo_types)
+    elif args.subcommand == "flavors":
+        handle_flavors(path, config, args, repo_types)
+    else:
+        handle_meta(path, config, args, repo_types)
