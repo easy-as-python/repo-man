@@ -97,9 +97,32 @@ Listing repositories
 
 .. code-block:: shell
 
-    $ repoman --type some-flavor --list
+    $ repoman list --type some-flavor
     repo-one
     repo-two
+
+Listing flavors for a repository
+++++++++++++++++++++++++++++++++
+
+.. code-block:: shell
+
+    $ repoman flavors repo-one
+    some-flavor
+
+Adding a repository
++++++++++++++++++++
+
+You can add a repository to an existing flavor:
+
+.. code-block:: shell
+
+    $ repoman add repo-four --type some-flavor
+
+You can also add a repository to an existing flavor:
+
+.. code-block:: shell
+
+    $ repoman add repo-five --type some-brand-new-flavor
 
 Listing known flavors
 +++++++++++++++++++++
@@ -119,7 +142,7 @@ As an example, you can iterate over all the repositories of a given flavor to ta
 
 .. code-block:: shell
 
-    $ for repo in $(repoman --type some-flavor --list); do
+    $ for repo in $(repoman list --type some-flavor); do
         cd $repo;
         # take some action;
         cd ..;
