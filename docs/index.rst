@@ -87,7 +87,7 @@ Usage
 
 This section describes some of the useful ways to leverage repo-man for productivity.
 
-.. admonition:: info
+.. note::
 
     Always check the output of the :command:`repo-man --help` command for the most accurate usage information.
 
