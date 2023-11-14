@@ -23,6 +23,7 @@ Use `repo-man` and its Python-compatible equivalent `repo_man` consistently for 
 
 - The shell command name most notably changes from `repoman` to `repo-man`
 - The Python package import name changes from `repoman` to `repo_man`
+- The config file can be renamed to better associate it with the command that uses it
 - Confusion will be minimized about stylization; it's always two-worded
 - Those using tab completion in their shell should be minimally impacted
 - Those using the command in scripts will need to update it

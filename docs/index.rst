@@ -47,11 +47,11 @@ You can run :command:`repo-man --help` to see all the available options.
 Configuration
 *************
 
-To configure repo-man, create a :file:`repo-types.cfg` file alongside your cloned repositories.
+To configure repo-man, create a :file:`repo-man.cfg` file alongside your cloned repositories.
 This file is an INI-style file with sections, where each section name is a repository flavor.
 In each repository flavor section, a single ``known`` property specifies a newline-delimited list of repositories.
 
-A valid :file:`repo-types.cfg` file might look something like the following:
+A valid :file:`repo-man.cfg` file might look something like the following:
 
 .. code-block:: cfg
 
@@ -73,7 +73,7 @@ Ignoring directories
 Some directories next to your configuration file may not be repositories,
 or you may just want to ignore them when using repo-man.
 
-You can use a special ``[ignore]`` section in the :file:`repo-types.cfg` to hide these directories:
+You can use a special ``[ignore]`` section in the :file:`repo-man.cfg` to hide these directories:
 
 .. code-block:: cfg
 
