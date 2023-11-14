@@ -7,7 +7,7 @@ from typing import NoReturn, Union
 
 FAIL = "\033[91m"
 ENDC = "\033[0m"
-REPO_TYPES_CFG = "repo-types.cfg"
+REPO_TYPES_CFG = "repo-man.cfg"
 
 
 def check_if_allowed(path: Path) -> Union[bool, NoReturn]:
@@ -178,7 +178,7 @@ def handle_meta(path: Path, config: configparser.ConfigParser, args, repo_types:
             if (
                 directory.is_dir()
                 and str(directory) not in repo_types["all"]
-                and str(directory) not in repo_types["ignore"]
+                and str(directory) not in repo_types.get("ignore", [])
             ):
                 print(directory)
 
@@ -198,7 +198,7 @@ def main():
     check_if_allowed(path)
 
     parser = argparse.ArgumentParser(
-        prog="repoman",
+        prog="repo-man",
         description="Manage repositories of different types",
     )
 

@@ -41,8 +41,8 @@ To get started, install the ``repo-man`` package using your favorite package man
 If you want to use ``repo-man`` in a global context, you can use a tool like `pipx <https://pypa.github.io/pipx/>`_.
 
 After you've installed ``repo-man`` and have activated its environment as needed,
-the :command:`repoman` command will be available for you to use.
-You can run :command:`repoman --help` to see all the available options.
+the :command:`repo-man` command will be available for you to use.
+You can run :command:`repo-man --help` to see all the available options.
 
 Configuration
 *************
@@ -65,7 +65,7 @@ A valid :file:`repo-types.cfg` file might look something like the following:
        repo-three
 
 
-With this configuration, you can now use the :command:`repoman` command to manage your repositories.
+With this configuration, you can now use the :command:`repo-man` command to manage your repositories.
 
 Ignoring directories
 ++++++++++++++++++++
@@ -89,7 +89,7 @@ This section describes some of the useful ways to leverage repo-man for producti
 
 .. admonition:: info
 
-    Always check the output of the :command:`repoman --help` command for the most accurate usage information.
+    Always check the output of the :command:`repo-man --help` command for the most accurate usage information.
 
 
 Listing repositories
@@ -97,7 +97,7 @@ Listing repositories
 
 .. code-block:: shell
 
-    $ repoman list --type some-flavor
+    $ repo-man list --type some-flavor
     repo-one
     repo-two
 
@@ -106,7 +106,7 @@ Listing flavors for a repository
 
 .. code-block:: shell
 
-    $ repoman flavors repo-one
+    $ repo-man flavors repo-one
     some-flavor
 
 Adding a repository
@@ -116,20 +116,20 @@ You can add a repository to an existing flavor:
 
 .. code-block:: shell
 
-    $ repoman add repo-four --type some-flavor
+    $ repo-man add repo-four --type some-flavor
 
 You can also add a repository to an existing flavor:
 
 .. code-block:: shell
 
-    $ repoman add repo-five --type some-brand-new-flavor
+    $ repo-man add repo-five --type some-brand-new-flavor
 
 Listing known flavors
 +++++++++++++++++++++
 
 .. code-block:: shell
 
-    $ repoman --known
+    $ repo-man --known
     some-flavor
     some-other-flavor
 
@@ -137,12 +137,12 @@ Listing known flavors
 Combining with other tools
 ++++++++++++++++++++++++++
 
-The value of repoman comes in when combining its output with other tools.
+The value of repo-man comes in when combining its output with other tools.
 As an example, you can iterate over all the repositories of a given flavor to take some action:
 
 .. code-block:: shell
 
-    $ for repo in $(repoman list --type some-flavor); do
+    $ for repo in $(repo-man list --type some-flavor); do
         cd $repo;
         # take some action;
         cd ..;
@@ -161,7 +161,7 @@ List repositories you have cloned but that have no configured flavor:
 
 .. code-block:: shell
 
-    $ repoman --unconfigured
+    $ repo-man --unconfigured
     some-unknown-repo
     some-other-unknown-repo
 
@@ -185,7 +185,7 @@ You can list all the repositories that you've configured as more than one flavor
 
 .. code-block:: shell
 
-    $ repoman --duplicates
+    $ repo-man --duplicates
     repo-one
 
 Tips and tricks
