@@ -1,4 +1,4 @@
 def test_package_is_importable():
-    import repoman
+    import repo_man
 
-    print(repoman)
+    print(repo_man)

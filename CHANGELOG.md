@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.0.4] - 2023-11-14
+
+### Changed
+
+- Use `repo-man` stylization consistently (and `repo_man` where needed for Python). This changes the executable command name, most notably.
+
+### Fixed
+
+- Fix `KeyError` when config doesn't contain an `ignore` section
+
 ## [0.0.3] - 2023-11-07
 
 ### Changed
