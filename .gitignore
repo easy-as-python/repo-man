@@ -133,4 +133,4 @@ dmypy.json
 *.c
 
 # repo-man
-repo-types.cfg
+repo-man.cfg
