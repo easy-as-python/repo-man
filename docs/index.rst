@@ -9,6 +9,7 @@ Manage repositories of different flavors.
    :hidden:
 
    reference/modules
+   CHANGELOG
 
 .. toctree::
    :glob:

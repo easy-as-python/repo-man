@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.0.5] - 2023-12-09
+
+### Changed
+
+- Use Click for command-line parsing
+
+### Added
+
+- `repo-man add` can now take multiple `--type` values to add a repo to many flavors at once
+
 ## [0.0.4] - 2023-11-14
 
 ### Changed
