@@ -21,7 +21,7 @@ def list_repos(config: configparser.ConfigParser, repo_type: str):
 
     repos = sorted(valid_repo_types[repo_type])
 
-    if len(repos) > 25:  # pragma: no cover
+    if len(repos) > 25:
         click.echo_via_pager("\n".join(repos))
     else:
         click.echo("\n".join(repos))
