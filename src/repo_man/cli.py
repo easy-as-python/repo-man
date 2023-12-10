@@ -15,7 +15,7 @@ from repo_man.consts import REPO_TYPES_CFG
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
 @click.version_option(package_name="repo-man")
 @click.pass_context
-def cli(context):
+def cli(context):  # pragma: no cover
     """Manage repositories of different types"""
 
     config = configparser.ConfigParser()
@@ -23,7 +23,7 @@ def cli(context):
     context.obj = config
 
 
-def main():
+def main():  # pragma: no cover
     cli.add_command(add)
     cli.add_command(edit)
     cli.add_command(flavors)

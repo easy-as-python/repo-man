@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.0.6] - 2023-12-10
+
 ### Added
 
 - `init` command to create a new config file
@@ -14,13 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `implode` command to remove configuration
 - `sniff` command to inspect configuration and issues
 - More confirmations for exceptional cases
-- A start to unit tests
+- Unit tests
 
 ### Changed
 
 - Move root options to new `sniff` command
 - Move subcommands and utilities to individual modules
 - Updated error and confirmation messaging
+- Exit with status code 1 in more cases
 - Open long repo lists in pager
 
 ## [0.0.5] - 2023-12-09
