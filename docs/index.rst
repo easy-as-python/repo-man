@@ -130,7 +130,7 @@ Listing known flavors
 
 .. code-block:: shell
 
-    $ repo-man --known
+    $ repo-man sniff --known
     some-flavor
     some-other-flavor
 
@@ -162,7 +162,7 @@ List repositories you have cloned but that have no configured flavor:
 
 .. code-block:: shell
 
-    $ repo-man --unconfigured
+    $ repo-man sniff --unconfigured
     some-unknown-repo
     some-other-unknown-repo
 
@@ -186,7 +186,7 @@ You can list all the repositories that you've configured as more than one flavor
 
 .. code-block:: shell
 
-    $ repo-man --duplicates
+    $ repo-man sniff --duplicates
     repo-one
 
 Tips and tricks
