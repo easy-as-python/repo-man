@@ -15,7 +15,7 @@ def flavors(config: configparser.ConfigParser, repo: str):
 
     if not Path(REPO_TYPES_CFG).exists():
         click.echo(click.style(f"No {REPO_TYPES_CFG} file found.", fg="red"))
-        return
+        raise SystemExit(1)
 
     found = set()
 

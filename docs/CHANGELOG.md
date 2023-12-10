@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `implode` command to remove configuration
 - `sniff` command to inspect configuration and issues
 - More confirmations for exceptional cases
-- A start to unit tests
+- Unit tests
 
 ### Changed
 

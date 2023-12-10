@@ -15,13 +15,13 @@ def list_repos(config: configparser.ConfigParser, repo_type: str):
 
     if not Path(REPO_TYPES_CFG).exists():
         click.echo(click.style(f"No {REPO_TYPES_CFG} file found.", fg="red"))
-        return
+        raise SystemExit(1)
 
     valid_repo_types = parse_repo_types(config)
 
     repos = sorted(valid_repo_types[repo_type])
 
-    if len(repos) > 25:
+    if len(repos) > 25:  # pragma: no cover
         click.echo_via_pager("\n".join(repos))
     else:
         click.echo("\n".join(repos))
