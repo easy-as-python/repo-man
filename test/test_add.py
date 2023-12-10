@@ -15,20 +15,26 @@ def test_add_clean_confirm():
         config.read("repo-man.cfg")
         result = runner.invoke(add, ["some-repo", "-t", "some-type"], input="Y\nY\n", obj=config)
         assert result.exit_code == 0
-        assert result.output == """No repo-man.cfg file found. Do you want to continue? [y/N]: Y
+        assert (
+            result.output
+            == """No repo-man.cfg file found. Do you want to continue? [y/N]: Y
 The following types are unknown and will be added:
 
 	some-type
 
 Continue? [y/N]: Y
 """
+        )
 
         with open("repo-man.cfg") as config_file:
-            assert config_file.read() == """[some-type]
+            assert (
+                config_file.read()
+                == """[some-type]
 known = 
 	some-repo
 
 """
+            )
 
 
 def test_add_clean_no_confirm_new_file():
@@ -40,9 +46,12 @@ def test_add_clean_no_confirm_new_file():
         config.read("repo-man.cfg")
         result = runner.invoke(add, ["some-repo", "-t", "some-type"], input="\n", obj=config)
         assert result.exit_code == 1
-        assert result.output == """No repo-man.cfg file found. Do you want to continue? [y/N]: 
+        assert (
+            result.output
+            == """No repo-man.cfg file found. Do you want to continue? [y/N]: 
 Aborted!
 """
+        )
 
 
 def test_add_with_existing_file():
@@ -50,25 +59,32 @@ def test_add_with_existing_file():
 
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[foo]
+            config_file.write(
+                """[foo]
 known =
     bar
-""")
+"""
+            )
 
         (Path(".") / "some-repo").mkdir()
         config = configparser.ConfigParser()
         config.read("repo-man.cfg")
         result = runner.invoke(add, ["some-repo", "-t", "some-type"], input="Y\n", obj=config)
         assert result.exit_code == 0
-        assert result.output == """The following types are unknown and will be added:
+        assert (
+            result.output
+            == """The following types are unknown and will be added:
 
 	some-type
 
 Continue? [y/N]: Y
 """
+        )
 
         with open("repo-man.cfg") as config_file:
-            assert config_file.read() == """[foo]
+            assert (
+                config_file.read()
+                == """[foo]
 known = 
 	bar
 
@@ -77,6 +93,7 @@ known =
 	some-repo
 
 """
+            )
 
 
 def test_add_with_existing_file_and_type():
@@ -84,10 +101,12 @@ def test_add_with_existing_file_and_type():
 
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[some-type]
+            config_file.write(
+                """[some-type]
 known =
     bar
-""")
+"""
+            )
 
         (Path(".") / "some-repo").mkdir()
         config = configparser.ConfigParser()
@@ -97,12 +116,15 @@ known =
         assert result.output == ""
 
         with open("repo-man.cfg") as config_file:
-            assert config_file.read() == """[some-type]
+            assert (
+                config_file.read()
+                == """[some-type]
 known = 
 	bar
 	some-repo
 
 """
+            )
 
 
 def test_add_multiple_types():
@@ -110,25 +132,32 @@ def test_add_multiple_types():
 
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[some-type]
+            config_file.write(
+                """[some-type]
 known =
     bar
-""")
+"""
+            )
 
         (Path(".") / "some-repo").mkdir()
         config = configparser.ConfigParser()
         config.read("repo-man.cfg")
         result = runner.invoke(add, ["some-repo", "-t", "some-type", "-t", "some-other-type"], input="Y\n", obj=config)
         assert result.exit_code == 0
-        assert result.output == """The following types are unknown and will be added:
+        assert (
+            result.output
+            == """The following types are unknown and will be added:
 
 	some-other-type
 
 Continue? [y/N]: Y
 """
+        )
 
         with open("repo-man.cfg") as config_file:
-            assert config_file.read() == """[some-type]
+            assert (
+                config_file.read()
+                == """[some-type]
 known = 
 	bar
 	some-repo
@@ -138,6 +167,7 @@ known =
 	some-repo
 
 """
+            )
 
 
 def test_add_no_action_needed():
@@ -145,10 +175,12 @@ def test_add_no_action_needed():
 
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[some-type]
+            config_file.write(
+                """[some-type]
 known =
     some-repo
-""")
+"""
+            )
 
         (Path(".") / "some-repo").mkdir()
         config = configparser.ConfigParser()
@@ -158,8 +190,11 @@ known =
         assert result.output == ""
 
         with open("repo-man.cfg") as config_file:
-            assert config_file.read() == """[some-type]
+            assert (
+                config_file.read()
+                == """[some-type]
 known = 
 	some-repo
 
 """
+            )
