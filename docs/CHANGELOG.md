@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- `init` command to create a new config file
+- `edit` command to edit a config file manually
+- `implode` command to remove configuration
+- `sniff` command to inspect configuration and issues
+- More confirmations for exceptional cases
+- A start to unit tests
+
+### Changed
+
+- Move root options to new `sniff` command
+- Move subcommands and utilities to individual modules
+- Updated error and confirmation messaging
+- Open long repo lists in pager
+
 ## [0.0.5] - 2023-12-09
 
 ### Changed
