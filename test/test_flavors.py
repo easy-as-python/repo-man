@@ -17,7 +17,8 @@ def test_flavors_when_configured(runner, get_config):
         Path("some-repo").mkdir()
 
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[foo]
+            config_file.write(
+                """[foo]
 known = 
 	some-repo
 
@@ -25,7 +26,8 @@ known =
 known = 
 	some-other-repo
 
-""")
+"""
+            )
 
         config = get_config()
         result = runner.invoke(flavors, ["some-repo"], obj=config)
@@ -38,11 +40,13 @@ def test_flavors_when_not_configured(runner, get_config):
         Path("some-repo").mkdir()
 
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[foo]
+            config_file.write(
+                """[foo]
 known = 
 	some-other-repo
 
-""")
+"""
+            )
 
         config = get_config()
         result = runner.invoke(flavors, ["some-repo"], obj=config)
@@ -55,11 +59,13 @@ def test_flavors_when_ignored(runner, get_config):
         Path("some-repo").mkdir()
 
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[ignore]
+            config_file.write(
+                """[ignore]
 known = 
 	some-repo
 
-""")
+"""
+            )
 
         config = get_config()
         result = runner.invoke(flavors, ["some-repo"], obj=config)

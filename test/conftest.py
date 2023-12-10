@@ -17,4 +17,5 @@ def get_config():
         config = configparser.ConfigParser()
         config.read(REPO_TYPES_CFG)
         return config
+
     return func

@@ -6,7 +6,8 @@ from repo_man.commands.sniff import sniff
 def test_known(runner, get_config):
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[foo]
+            config_file.write(
+                """[foo]
 known = 
 	some-repo
 
@@ -18,7 +19,8 @@ known =
 known = 
 	yet-another-repo
 
-""")
+"""
+            )
 
         config = get_config()
         config.read("repo-man.cfg")
@@ -33,11 +35,13 @@ def test_unconfigured(runner, get_config):
         Path("some-repo").mkdir()
         Path("some-other-repo").mkdir()
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[foo]
+            config_file.write(
+                """[foo]
 known = 
 	some-repo
 
-""")
+"""
+            )
 
         config = get_config()
         config.read("repo-man.cfg")
@@ -50,7 +54,8 @@ known =
 def test_duplicates(runner, get_config):
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
-            config_file.write("""[foo]
+            config_file.write(
+                """[foo]
 known = 
 	some-repo
 	some-other-repo
@@ -61,7 +66,8 @@ known =
 	some-other-repo
 	yet-another-repo
 
-""")
+"""
+            )
 
         config = get_config()
         config.read("repo-man.cfg")
