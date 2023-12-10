@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Move root options to new `sniff` command
 - Move subcommands and utilities to individual modules
 - Updated error and confirmation messaging
+- Exit with status code 1 in more cases
 - Open long repo lists in pager
 
 ## [0.0.5] - 2023-12-09
