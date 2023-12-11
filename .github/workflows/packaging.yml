@@ -145,7 +145,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dist/repoman-*.whl
-            dist/repoman-*.tar.gz
+            dist/repo-man-*.whl
+            dist/repo_man-*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
