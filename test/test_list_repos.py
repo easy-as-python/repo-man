@@ -79,3 +79,29 @@ known =
         result = runner.invoke(list_repos, ["-t", "all"], obj=config)
         assert result.exit_code == 0
         mock_echo_via_pager.assert_called_once_with("\n".join(sorted(all_repos.split("\n"))))
+
+
+def test_list_repos_for_multiple_tags(runner, get_config):
+    with runner.isolated_filesystem():
+        with open("repo-man.cfg", "w") as config_file:
+            config_file.write(
+                """[foo]
+known = 
+    some-repo
+
+[bar]
+known = 
+    some-other-repo
+
+"""
+            )
+
+        config = get_config()
+        result = runner.invoke(list_repos, ["-t", "foo", "-t", "bar"], obj=config)
+        assert result.exit_code == 0
+        assert (
+            result.output
+            == """some-other-repo
+some-repo
+"""
+        )
