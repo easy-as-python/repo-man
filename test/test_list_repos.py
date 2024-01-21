@@ -105,5 +105,3 @@ known =
 some-repo
 """
         )
-
-
