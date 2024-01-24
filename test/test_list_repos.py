@@ -105,3 +105,31 @@ known =
 some-repo
 """
         )
+
+
+def test_list_repos_when_invalid_type(runner, get_config):
+    with runner.isolated_filesystem():
+        with open("repo-man.cfg", "w") as config_file:
+            config_file.write(
+                """[foo]
+known = 
+    some-repo
+
+[bar]
+known = 
+    some-other-repo
+
+"""
+            )
+
+        config = get_config()
+        result = runner.invoke(list_repos, ["-t", "baz"], obj=config)
+        assert result.exit_code == 2
+        assert result.output.endswith(
+            """Error: Invalid value: Invalid repository type 'baz'. Valid types are:
+
+\tall
+\tfoo
+\tbar
+"""
+        )

@@ -8,6 +8,7 @@ from repo_man.commands.flavors import flavors
 from repo_man.commands.implode import implode
 from repo_man.commands.init import init
 from repo_man.commands.list_repos import list_repos
+from repo_man.commands.remove import remove
 from repo_man.commands.sniff import sniff
 from repo_man.consts import REPO_TYPES_CFG
 
@@ -30,5 +31,6 @@ def main():  # pragma: no cover
     cli.add_command(implode)
     cli.add_command(init)
     cli.add_command(list_repos)
+    cli.add_command(remove)
     cli.add_command(sniff)
     cli()

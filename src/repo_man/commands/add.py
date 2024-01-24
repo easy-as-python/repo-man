@@ -1,10 +1,9 @@
 import configparser
-from pathlib import Path
 
 import click
 
 from repo_man.consts import REPO_TYPES_CFG
-from repo_man.utils import pass_config
+from repo_man.utils import pass_config, ensure_config_file_exists
 
 
 @click.command
@@ -14,8 +13,7 @@ from repo_man.utils import pass_config
 def add(config: configparser.ConfigParser, repo: str, repo_types: list[str]):
     """Add a new repository"""
 
-    if not Path(REPO_TYPES_CFG).exists():
-        click.confirm(click.style(f"No {REPO_TYPES_CFG} file found. Do you want to continue?", fg="yellow"), abort=True)
+    ensure_config_file_exists(confirm=True)
 
     new_types = [repo_type for repo_type in repo_types if repo_type not in config]
     if new_types:

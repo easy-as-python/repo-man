@@ -1,10 +1,8 @@
 import configparser
-from pathlib import Path
 
 import click
 
-from repo_man.consts import REPO_TYPES_CFG
-from repo_man.utils import pass_config
+from repo_man.utils import pass_config, ensure_config_file_exists
 
 
 @click.command
@@ -13,9 +11,7 @@ from repo_man.utils import pass_config
 def flavors(config: configparser.ConfigParser, repo: str):
     """List the configured types for a repository"""
 
-    if not Path(REPO_TYPES_CFG).exists():
-        click.echo(click.style(f"No {REPO_TYPES_CFG} file found.", fg="red"))
-        raise SystemExit(1)
+    ensure_config_file_exists()
 
     found = set()
 
