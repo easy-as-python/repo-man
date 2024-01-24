@@ -1,4 +1,5 @@
 import configparser
+from pathlib import Path
 
 import click
 
@@ -24,3 +25,14 @@ def get_valid_repo_types():
     config.read(REPO_TYPES_CFG)
     valid_repo_types = parse_repo_types(config)
     return sorted(set(valid_repo_types.keys()))
+
+
+def ensure_config_file_exists(confirm: bool = False) -> None:
+    if not Path(REPO_TYPES_CFG).exists():
+        if confirm:
+            click.confirm(
+                click.style(f"No {REPO_TYPES_CFG} file found. Do you want to continue?", fg="yellow"), abort=True
+            )
+        else:
+            click.echo(click.style(f"No {REPO_TYPES_CFG} file found.", fg="red"))
+            raise SystemExit(1)

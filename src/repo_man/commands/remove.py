@@ -1,21 +1,19 @@
 import configparser
-from pathlib import Path
 
 import click
 
 from repo_man.consts import REPO_TYPES_CFG
-from repo_man.utils import parse_repo_types, pass_config
+from repo_man.utils import parse_repo_types, pass_config, ensure_config_file_exists
 
 
-@click.command
+@click.command(name="remove", help="Remove a repository from one or more types")
 @click.option("-t", "--type", "repo_types", multiple=True, help="The types from which to remove the repository")
 @click.argument("repo", type=click.Path(exists=True, file_okay=False))
 @pass_config
 def remove(config: configparser.ConfigParser, repo: str, repo_types: list[str]):
     """Remove a repository from some or all types"""
 
-    if not Path(REPO_TYPES_CFG).exists():
-        raise click.UsageError(f"No {REPO_TYPES_CFG} file found.")
+    ensure_config_file_exists()
 
     valid_repo_types = parse_repo_types(config)
 
@@ -28,8 +26,11 @@ def remove(config: configparser.ConfigParser, repo: str, repo_types: list[str]):
             click.confirm(f"Repository '{repo}' is not configured for type '{repo_type}'. Continue?", abort=True)
 
         original_config = config[repo_type]["known"]
-        config.set(repo_type, "known", "\n".join(original_repo for original_repo in original_config.split("\n") if original_repo != repo))
+        config.set(
+            repo_type,
+            "known",
+            "\n".join(original_repo for original_repo in original_config.split("\n") if original_repo != repo),
+        )
 
     with open(REPO_TYPES_CFG, "w") as config_file:
         config.write(config_file)
-
