@@ -10,7 +10,7 @@ from repo_man.utils import parse_repo_types, pass_config, ensure_config_file_exi
 @click.option("-t", "--type", "repo_types", multiple=True, help="The types from which to remove the repository")
 @click.argument("repo", type=click.Path(exists=True, file_okay=False))
 @pass_config
-def remove(config: configparser.ConfigParser, repo: str, repo_types: list[str]):
+def remove(config: configparser.ConfigParser, repo: str, repo_types: list[str]) -> None:
     """Remove a repository from some or all types"""
 
     ensure_config_file_exists()

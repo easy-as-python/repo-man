@@ -1,9 +1,13 @@
-from unittest.mock import patch
+import configparser
+from unittest.mock import patch, Mock
+from typing import Callable
+
+import click
 
 from repo_man.commands.list_repos import list_repos
 
 
-def test_list_repos_clean(runner, get_config):
+def test_list_repos_clean(runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         config = get_config()
         result = runner.invoke(list_repos, ["-t", "all"], obj=config)
@@ -11,7 +15,9 @@ def test_list_repos_clean(runner, get_config):
         assert result.output == "No repo-man.cfg file found.\n"
 
 
-def test_list_repos_with_matches(runner, get_config):
+def test_list_repos_with_matches(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -35,7 +41,9 @@ some-repo
 
 
 @patch("repo_man.commands.list_repos.click.echo_via_pager")
-def test_list_repos_when_long(mock_echo_via_pager, runner, get_config):
+def test_list_repos_when_long(
+    mock_echo_via_pager: Mock, runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     all_repos = """some-repo-1
 some-repo-2
 some-repo-3
@@ -81,7 +89,9 @@ known =
         mock_echo_via_pager.assert_called_once_with("\n".join(sorted(all_repos.split("\n"))))
 
 
-def test_list_repos_for_multiple_tags(runner, get_config):
+def test_list_repos_for_multiple_tags(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -107,7 +117,9 @@ some-repo
         )
 
 
-def test_list_repos_when_invalid_type(runner, get_config):
+def test_list_repos_when_invalid_type(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(

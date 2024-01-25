@@ -5,7 +5,7 @@ from repo_man.utils import ensure_config_file_exists
 
 
 @click.command
-def edit():
+def edit() -> None:
     """Edit the repo-man configuration manually"""
 
     ensure_config_file_exists()

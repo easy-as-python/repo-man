@@ -1,9 +1,15 @@
+import configparser
 from pathlib import Path
+from typing import Callable
+
+import click
 
 from repo_man.commands.add import add
 
 
-def test_add_clean_confirm(runner, get_config):
+def test_add_clean_confirm(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         (Path(".") / "some-repo").mkdir()
         config = get_config()
@@ -31,7 +37,9 @@ known =
             )
 
 
-def test_add_clean_no_confirm_new_file(runner, get_config):
+def test_add_clean_no_confirm_new_file(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         (Path(".") / "some-repo").mkdir()
         config = get_config()
@@ -45,7 +53,9 @@ Aborted!
         )
 
 
-def test_add_with_existing_file(runner, get_config):
+def test_add_with_existing_file(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -84,7 +94,9 @@ known =
             )
 
 
-def test_add_with_existing_file_and_type(runner, get_config):
+def test_add_with_existing_file_and_type(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -112,7 +124,9 @@ known =
             )
 
 
-def test_add_multiple_types(runner, get_config):
+def test_add_multiple_types(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -152,7 +166,9 @@ known =
             )
 
 
-def test_add_no_action_needed(runner, get_config):
+def test_add_no_action_needed(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(

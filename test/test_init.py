@@ -1,9 +1,11 @@
 from pathlib import Path
 
-from repo_man.cli import init
+import click
+
+from repo_man.commands.init import init
 
 
-def test_init_clean(runner):
+def test_init_clean(runner: click.testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         assert not Path("repo-man.cfg").exists()
 
@@ -13,7 +15,7 @@ def test_init_clean(runner):
         assert Path("repo-man.cfg").exists()
 
 
-def test_init_with_existing_confirm(runner):
+def test_init_with_existing_confirm(runner: click.testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -31,7 +33,7 @@ known =
             assert config_file.read() == ""
 
 
-def test_init_with_existing_no_confirm(runner):
+def test_init_with_existing_no_confirm(runner: click.testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(

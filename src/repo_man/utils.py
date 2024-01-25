@@ -20,7 +20,7 @@ def parse_repo_types(config: configparser.ConfigParser) -> dict[str, set[str]]:
     return repo_types
 
 
-def get_valid_repo_types():
+def get_valid_repo_types() -> list[str]:
     config = configparser.ConfigParser()
     config.read(REPO_TYPES_CFG)
     valid_repo_types = parse_repo_types(config)

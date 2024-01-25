@@ -1,10 +1,12 @@
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import patch, Mock
+
+import click
 
 from repo_man.commands import edit
 
 
-def test_edit_clean(runner):
+def test_edit_clean(runner: click.testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         result = runner.invoke(edit.edit)
         assert result.exit_code == 1
@@ -12,7 +14,7 @@ def test_edit_clean(runner):
 
 
 @patch("repo_man.commands.edit.click.edit")
-def test_edit_when_config_present(mock_edit, runner):
+def test_edit_when_config_present(mock_edit: Mock, runner: click.testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         Path("repo-man.cfg").touch()
         result = runner.invoke(edit.edit)

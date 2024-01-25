@@ -7,7 +7,7 @@ from repo_man.consts import REPO_TYPES_CFG
 
 @click.command
 @click.argument("path", type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path))
-def implode(path: Path):
+def implode(path: Path) -> None:
     """Remove repo-man configuration for the specified directory"""
 
     click.confirm(click.style("Are you sure you want to do this?", fg="yellow"), abort=True)

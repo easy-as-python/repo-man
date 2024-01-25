@@ -1,9 +1,13 @@
+import configparser
 from pathlib import Path
+from typing import Callable
+
+import click
 
 from repo_man.commands.flavors import flavors
 
 
-def test_flavors_clean(runner, get_config):
+def test_flavors_clean(runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
         config = get_config()
@@ -12,7 +16,9 @@ def test_flavors_clean(runner, get_config):
         assert result.output == "No repo-man.cfg file found.\n"
 
 
-def test_flavors_when_configured(runner, get_config):
+def test_flavors_when_configured(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
 
@@ -35,7 +41,9 @@ known =
         assert result.output == "foo\n"
 
 
-def test_flavors_when_not_configured(runner, get_config):
+def test_flavors_when_not_configured(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
 
@@ -54,7 +62,9 @@ known =
         assert result.output == ""
 
 
-def test_flavors_when_ignored(runner, get_config):
+def test_flavors_when_ignored(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
 
