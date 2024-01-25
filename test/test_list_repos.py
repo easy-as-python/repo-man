@@ -1,6 +1,6 @@
 import configparser
-from unittest.mock import patch, Mock
 from typing import Callable
+from unittest.mock import Mock, patch
 
 import click
 

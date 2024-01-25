@@ -2,7 +2,7 @@ import configparser
 
 import click
 
-from repo_man.utils import parse_repo_types, pass_config, ensure_config_file_exists
+from repo_man.utils import ensure_config_file_exists, parse_repo_types, pass_config
 
 
 @click.command(name="list", help="The type of repository to manage")

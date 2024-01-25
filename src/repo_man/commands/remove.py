@@ -3,7 +3,7 @@ import configparser
 import click
 
 from repo_man.consts import REPO_TYPES_CFG
-from repo_man.utils import parse_repo_types, pass_config, ensure_config_file_exists
+from repo_man.utils import ensure_config_file_exists, parse_repo_types, pass_config
 
 
 @click.command(name="remove", help="Remove a repository from one or more types")

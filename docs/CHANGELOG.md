@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Use `strict` for mypy type checking on source and tests
+- Add isort to order imports consistently
 
 ## [0.0.7] - 2024-01-21
 
