@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `remove` command to remove a repository from one or more types
 
+### Changed
+
+- Use `strict` for mypy type checking on source and tests
+
 ## [0.0.7] - 2024-01-21
 
 ### Added

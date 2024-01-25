@@ -8,7 +8,7 @@ from repo_man.utils import parse_repo_types, pass_config, ensure_config_file_exi
 @click.command(name="list", help="The type of repository to manage")
 @click.option("-t", "--type", "repo_types", multiple=True, show_choices=False, required=True)
 @pass_config
-def list_repos(config: configparser.ConfigParser, repo_types: list[str]):
+def list_repos(config: configparser.ConfigParser, repo_types: list[str]) -> None:
     """List matching repositories"""
 
     ensure_config_file_exists()

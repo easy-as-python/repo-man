@@ -1,9 +1,13 @@
+import configparser
 from pathlib import Path
+from typing import Callable
+
+import click
 
 from repo_man.commands.sniff import sniff
 
 
-def test_known(runner, get_config):
+def test_known(runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -30,7 +34,7 @@ known =
         assert result.output == "bar\nfoo\n"
 
 
-def test_unconfigured(runner, get_config):
+def test_unconfigured(runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
         Path("some-other-repo").mkdir()
@@ -51,7 +55,7 @@ known =
         assert result.output == "some-other-repo\n"
 
 
-def test_duplicates(runner, get_config):
+def test_duplicates(runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(

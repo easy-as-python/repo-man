@@ -11,7 +11,7 @@ from repo_man.utils import parse_repo_types, pass_config
 @click.option("-u", "--unconfigured", is_flag=True, help="List repositories without a configured type")
 @click.option("-d", "--duplicates", is_flag=True, help="List repositories with more than one configured type")
 @pass_config
-def sniff(config: configparser.ConfigParser, known: bool, unconfigured: bool, duplicates: bool):
+def sniff(config: configparser.ConfigParser, known: bool, unconfigured: bool, duplicates: bool) -> None:
     """Show information and potential issues with configuration"""
 
     path = Path(".")

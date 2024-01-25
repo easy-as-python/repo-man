@@ -1,9 +1,13 @@
+import configparser
 from pathlib import Path
+from typing import Callable
+
+import click
 
 from repo_man.commands.remove import remove
 
 
-def test_remove_clean(runner, get_config):
+def test_remove_clean(runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
 
@@ -24,7 +28,9 @@ known =
             assert config_file.read() == "[foo]\nknown = \n\n"
 
 
-def test_remove_when_invalid_type(runner, get_config):
+def test_remove_when_invalid_type(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
 
@@ -57,7 +63,9 @@ known =
             )
 
 
-def test_remove_when_unused_type(runner, get_config):
+def test_remove_when_unused_type(
+    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
 

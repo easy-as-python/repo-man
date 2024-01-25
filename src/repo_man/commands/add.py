@@ -10,7 +10,7 @@ from repo_man.utils import pass_config, ensure_config_file_exists
 @click.option("-t", "--type", "repo_types", multiple=True, help="The type of the repository", required=True)
 @click.argument("repo", type=click.Path(exists=True, file_okay=False))
 @pass_config
-def add(config: configparser.ConfigParser, repo: str, repo_types: list[str]):
+def add(config: configparser.ConfigParser, repo: str, repo_types: list[str]) -> None:
     """Add a new repository"""
 
     ensure_config_file_exists(confirm=True)
