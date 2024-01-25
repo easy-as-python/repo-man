@@ -5,7 +5,6 @@ import click
 
 from repo_man.consts import REPO_TYPES_CFG
 
-
 pass_config = click.make_pass_decorator(configparser.ConfigParser)
 
 
