@@ -4,19 +4,19 @@ from typing import Callable
 
 import click
 
-from repo_man.commands.flavors import flavors
+from repo_man.commands.types import types
 
 
-def test_flavors_clean(runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
+def test_types_clean(runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
         config = get_config()
-        result = runner.invoke(flavors, ["some-repo"], obj=config)
+        result = runner.invoke(types, ["some-repo"], obj=config)
         assert result.exit_code == 1
         assert result.output == "No repo-man.cfg file found.\n"
 
 
-def test_flavors_when_configured(
+def test_types_when_configured(
     runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
@@ -36,12 +36,12 @@ known =
             )
 
         config = get_config()
-        result = runner.invoke(flavors, ["some-repo"], obj=config)
+        result = runner.invoke(types, ["some-repo"], obj=config)
         assert result.exit_code == 0
         assert result.output == "foo\n"
 
 
-def test_flavors_when_not_configured(
+def test_types_when_not_configured(
     runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
@@ -57,12 +57,12 @@ known =
             )
 
         config = get_config()
-        result = runner.invoke(flavors, ["some-repo"], obj=config)
+        result = runner.invoke(types, ["some-repo"], obj=config)
         assert result.exit_code == 0
         assert result.output == ""
 
 
-def test_flavors_when_ignored(
+def test_types_when_ignored(
     runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
@@ -78,6 +78,6 @@ known =
             )
 
         config = get_config()
-        result = runner.invoke(flavors, ["some-repo"], obj=config)
+        result = runner.invoke(types, ["some-repo"], obj=config)
         assert result.exit_code == 0
         assert result.output == ""
