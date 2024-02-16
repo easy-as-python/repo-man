@@ -1,7 +1,7 @@
 Welcome to repo-man's documentation!
 ====================================
 
-Manage repositories of different flavors.
+Manage repositories of different types.
 
 .. toctree::
    :maxdepth: 2
@@ -20,14 +20,14 @@ Manage repositories of different flavors.
 
 If you work in open source or as a cross-team individual contributor in your organization,
 you may have dozens of repositories cloned to your local machine.
-Those repositories may be of several different *flavors*, exhibiting a particular file structure or purpose.
+Those repositories may be of several different *types*, exhibiting a particular file structure or purpose.
 
-You may find yourself wanting to query or mutate repositories of a particular flavor and,
-unless the repositories of that flavor share a common name prefix or some other signifier,
+You may find yourself wanting to query or mutate repositories of a particular type and,
+unless the repositories of that type share a common name prefix or some other signifier,
 it can prove tedious to specify which repositories to run commands against.
 Even great tools like `fzf <https://github.com/junegunn/fzf>`_ don't quite reduce the burden of selecting all desired repositories at this scale.
 
-repo-man is a tool for managing a catalog of repositories and their flavors to improve your productivity.
+repo-man is a tool for managing a catalog of repositories and their types to improve your productivity.
 
 Getting started
 ---------------
@@ -49,19 +49,19 @@ Configuration
 *************
 
 To configure repo-man, create a :file:`repo-man.cfg` file alongside your cloned repositories.
-This file is an INI-style file with sections, where each section name is a repository flavor.
-In each repository flavor section, a single ``known`` property specifies a newline-delimited list of repositories.
+This file is an INI-style file with sections, where each section name is a repository type.
+In each repository type section, a single ``known`` property specifies a newline-delimited list of repositories.
 
 A valid :file:`repo-man.cfg` file might look something like the following:
 
 .. code-block:: cfg
 
-   [some-flavor]
+   [some-type]
    known =
        repo-one
        repo-two
 
-   [some-other-flavor]
+   [some-other-type]
    known =
        repo-three
 
@@ -98,52 +98,52 @@ Listing repositories
 
 .. code-block:: shell
 
-    $ repo-man list --type some-flavor
+    $ repo-man list --type some-type
     repo-one
     repo-two
 
-Listing flavors for a repository
+Listing types for a repository
 ++++++++++++++++++++++++++++++++
 
 .. code-block:: shell
 
-    $ repo-man flavors repo-one
-    some-flavor
+    $ repo-man types repo-one
+    some-type
 
 Adding a repository
 +++++++++++++++++++
 
-You can add a repository to an existing flavor:
+You can add a repository to an existing type:
 
 .. code-block:: shell
 
-    $ repo-man add repo-four --type some-flavor
+    $ repo-man add repo-four --type some-type
 
-You can also add a repository to an existing flavor:
+You can also add a repository to an existing type:
 
 .. code-block:: shell
 
-    $ repo-man add repo-five --type some-brand-new-flavor
+    $ repo-man add repo-five --type some-brand-new-type
 
-Listing known flavors
+Listing known types
 +++++++++++++++++++++
 
 .. code-block:: shell
 
     $ repo-man sniff --known
-    some-flavor
-    some-other-flavor
+    some-type
+    some-other-type
 
 
 Combining with other tools
 ++++++++++++++++++++++++++
 
 The value of repo-man comes in when combining its output with other tools.
-As an example, you can iterate over all the repositories of a given flavor to take some action:
+As an example, you can iterate over all the repositories of a given type to take some action:
 
 .. code-block:: shell
 
-    $ for repo in $(repo-man list --type some-flavor); do
+    $ for repo in $(repo-man list --type some-type); do
         cd $repo;
         # take some action;
         cd ..;
@@ -158,7 +158,7 @@ These commands help you query and improve your repo-man configuration.
 Unconfigured repositories
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-List repositories you have cloned but that have no configured flavor:
+List repositories you have cloned but that have no configured type:
 
 .. code-block:: shell
 
@@ -169,17 +169,17 @@ List repositories you have cloned but that have no configured flavor:
 Duplicate repositories
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Some repositories may be of multiple flavors, but you may also accidentally configure a repository as two flavors.
-You can list all the repositories that you've configured as more than one flavor:
+Some repositories may be of multiple types, but you may also accidentally configure a repository as two types.
+You can list all the repositories that you've configured as more than one type:
 
 .. code-block:: cfg
 
-    [some-flavor]
+    [some-type]
     known =
         repo-one
         repo-two
 
-    [some-other-flavor]
+    [some-other-type]
     known =
         repo-one
 
@@ -192,7 +192,7 @@ You can list all the repositories that you've configured as more than one flavor
 Tips and tricks
 +++++++++++++++
 
-You may wish to create a hierarchy of flavors, starting your flavor names with the most general classification.
+You may wish to create a hierarchy of types, starting your type names with the most general classification.
 As an example, you may have several different package and application types that you could capture as follows:
 
 .. code-block:: cfg
@@ -215,7 +215,7 @@ As an example, you may have several different package and application types that
         left-pad
         is-even
 
-repo-man doesn't currently do anything special with these, but could grow features to e.g. list flavor classes.
+repo-man doesn't currently do anything special with these, but could grow features to e.g. list type classes.
 
 Indices and tables
 ==================

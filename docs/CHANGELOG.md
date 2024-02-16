@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Update `flavors` command and terminology to `types`
 - Use `strict` for mypy type checking on source and tests
 - Add isort to order imports consistently
 
