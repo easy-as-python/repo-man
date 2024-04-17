@@ -5,7 +5,7 @@ import click
 from repo_man.utils import ensure_config_file_exists, parse_repo_types, pass_config
 
 
-@click.command(name="list", help="The type of repository to manage")
+@click.command(name="list")
 @click.option("-t", "--type", "repo_types", multiple=True, show_choices=False, required=True)
 @pass_config
 def list_repos(config: configparser.ConfigParser, repo_types: list[str]) -> None:
