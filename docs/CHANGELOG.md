@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix incorrect help string for the `list` command
 
+### Changed
+
+- Update `flavors` command and terminology to `types`
+
 ## [0.0.8] - 2024-02-12
 
 ### Added
@@ -21,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Update `flavors` command and terminology to `types`
 - Use `strict` for mypy type checking on source and tests
 - Add isort to order imports consistently
 
