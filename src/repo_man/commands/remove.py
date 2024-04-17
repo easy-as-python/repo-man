@@ -6,7 +6,7 @@ from repo_man.consts import REPO_TYPES_CFG
 from repo_man.utils import ensure_config_file_exists, parse_repo_types, pass_config
 
 
-@click.command(name="remove", help="Remove a repository from one or more types")
+@click.command(name="remove")
 @click.option("-t", "--type", "repo_types", multiple=True, help="The types from which to remove the repository")
 @click.argument("repo", type=click.Path(exists=True, file_okay=False))
 @pass_config
