@@ -1,21 +1,21 @@
 from pathlib import Path
 
-import click
+import typer
 
-from repo_man.commands.init import init
+from repo_man.cli import cli
 
 
-def test_init_clean(runner: click.testing.CliRunner) -> None:
+def test_init_clean(runner: typer.testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         assert not Path("repo-man.cfg").exists()
 
-        result = runner.invoke(init, ["."])
+        result = runner.invoke(cli, ["init", "."])
         assert result.exit_code == 0
         assert result.output == ""
         assert Path("repo-man.cfg").exists()
 
 
-def test_init_with_existing_confirm(runner: click.testing.CliRunner) -> None:
+def test_init_with_existing_confirm(runner: typer.testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -25,7 +25,7 @@ known =
 """
             )
 
-        result = runner.invoke(init, ["."], input="Y")
+        result = runner.invoke(cli, ["init", "."], input="Y")
         assert result.exit_code == 0
         assert result.output == "repo-man.cfg file already exists. Overwrite with empty configuration? [y/N]: Y\n"
 
@@ -33,7 +33,7 @@ known =
             assert config_file.read() == ""
 
 
-def test_init_with_existing_no_confirm(runner: click.testing.CliRunner) -> None:
+def test_init_with_existing_no_confirm(runner: typer.testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -43,10 +43,10 @@ known =
 """
             )
 
-        result = runner.invoke(init, ["."], input="\n")
+        result = runner.invoke(cli, ["init", "."], input="\n")
         assert result.exit_code == 1
         assert (
-            result.output == "repo-man.cfg file already exists. Overwrite with empty configuration? [y/N]: \nAborted!\n"
+            result.output == "repo-man.cfg file already exists. Overwrite with empty configuration? [y/N]: \nAborted.\n"
         )
 
         with open("repo-man.cfg") as config_file:

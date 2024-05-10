@@ -2,12 +2,12 @@ import configparser
 from pathlib import Path
 from typing import Callable
 
-import click
+import typer
 
-from repo_man.commands.remove import remove
+from repo_man.cli import cli
 
 
-def test_remove_clean(runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
+def test_remove_clean(runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
 
@@ -20,7 +20,7 @@ known =
             )
 
         config = get_config()
-        result = runner.invoke(remove, ["-t", "foo", "some-repo"], obj=config)
+        result = runner.invoke(cli, ["remove", "-t", "foo", "some-repo"], obj=config)
         assert result.exit_code == 0
         assert result.output == ""
 
@@ -29,7 +29,7 @@ known =
 
 
 def test_remove_when_invalid_type(
-    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
@@ -43,15 +43,12 @@ known =
             )
 
         config = get_config()
-        result = runner.invoke(remove, ["-t", "bar", "some-repo"], obj=config)
+        result = runner.invoke(cli, ["remove", "-t", "bar", "some-repo"], obj=config)
+        print(result.output)
         assert result.exit_code == 2
-        assert result.output.endswith(
-            """Error: Invalid value: Invalid repository type 'bar'. Valid types are:
-
-\tall
-\tfoo
-"""
-        )
+        assert "│ Invalid value: Invalid repository type 'bar'. Valid types are:" in result.output
+        assert "│         all" in result.output
+        assert "│         foo" in result.output
 
         with open("repo-man.cfg") as config_file:
             assert (
@@ -64,7 +61,7 @@ known =
 
 
 def test_remove_when_unused_type(
-    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
@@ -82,11 +79,11 @@ known =
             )
 
         config = get_config()
-        result = runner.invoke(remove, ["-t", "bar", "some-repo"], obj=config)
+        result = runner.invoke(cli, ["remove", "-t", "bar", "some-repo"], obj=config)
         assert result.exit_code == 1
         assert (
             result.output
             == """Repository 'some-repo' is not configured for type 'bar'. Continue? [y/N]: 
-Aborted!
+Aborted.
 """
         )

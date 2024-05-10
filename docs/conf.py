@@ -48,6 +48,8 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+nitpick_ignore = [('py:class', 'typer.models.Context')]
+
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -66,6 +68,7 @@ html_theme = 'furo'
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
+    "typer": ("https://sphinxcontrib-typer.readthedocs.io/en/latest/", None),
 }
 
 # -- Setup for sphinx-apidoc -------------------------------------------------

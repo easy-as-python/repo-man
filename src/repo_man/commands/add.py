@@ -1,24 +1,26 @@
-import configparser
+from pathlib import Path
+from typing import Annotated
 
-import click
+import typer
 
 from repo_man.consts import REPO_TYPES_CFG
-from repo_man.utils import ensure_config_file_exists, pass_config
+from repo_man.utils import ensure_config_file_exists
 
 
-@click.command
-@click.option("-t", "--type", "repo_types", multiple=True, help="The type of the repository", required=True)
-@click.argument("repo", type=click.Path(exists=True, file_okay=False))
-@pass_config
-def add(config: configparser.ConfigParser, repo: str, repo_types: list[str]) -> None:
+def add(
+    ctx: typer.Context,
+    repo: Annotated[Path, typer.Argument(exists=True, file_okay=False)],
+    repo_types: Annotated[list[str], typer.Option("-t", "--types", help="The type of the repository")],
+) -> None:
     """Add a new repository"""
 
+    config = ctx.obj
     ensure_config_file_exists(confirm=True)
 
     new_types = [repo_type for repo_type in repo_types if repo_type not in config]
     if new_types:
         message = "\n\t".join(new_types)
-        click.confirm(f"The following types are unknown and will be added:\n\n\t{message}\n\nContinue?", abort=True)
+        typer.confirm(f"The following types are unknown and will be added:\n\n\t{message}\n\nContinue?", abort=True)
 
     for repo_type in repo_types:
         if repo_type in config:
@@ -27,7 +29,7 @@ def add(config: configparser.ConfigParser, repo: str, repo_types: list[str]) -> 
             original_config = ""
             config.add_section(repo_type)
 
-        if "known" not in config[repo_type] or repo not in config[repo_type]["known"].split("\n"):
+        if "known" not in config[repo_type] or str(repo) not in config[repo_type]["known"].split("\n"):
             config.set(repo_type, "known", f"{original_config}\n{repo}")
 
     with open(REPO_TYPES_CFG, "w") as config_file:

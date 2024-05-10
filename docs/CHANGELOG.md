@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.0.10] - 2024-05-10
+
+### Changed
+
+- Use Typer for command-line parsing
+
 ## [0.0.9] - 2024-04-17
 
 ### Fixed

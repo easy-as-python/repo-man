@@ -6,6 +6,8 @@ Date: 2023-12-09
 
 Accepted
 
+Superseded by [7. Use Typer for CLI parsing](0007-use-typer-for-cli-parsing.md)
+
 ## Context
 
 Parsing command-line arguments is a challenging problem.

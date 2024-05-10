@@ -1,18 +1,24 @@
-import configparser
 from pathlib import Path
+from typing import Annotated, Optional
 
-import click
+import typer
 
-from repo_man.utils import parse_repo_types, pass_config
+from repo_man.utils import parse_repo_types
 
 
-@click.command
-@click.option("-k", "--known", is_flag=True, help="List known repository types")
-@click.option("-u", "--unconfigured", is_flag=True, help="List repositories without a configured type")
-@click.option("-d", "--duplicates", is_flag=True, help="List repositories with more than one configured type")
-@pass_config
-def sniff(config: configparser.ConfigParser, known: bool, unconfigured: bool, duplicates: bool) -> None:
+def sniff(
+    ctx: typer.Context,
+    known: Annotated[Optional[bool], typer.Option("-k", "--known", help="List known repository types")] = False,
+    unconfigured: Annotated[
+        Optional[bool], typer.Option("-u", "--unconfigured", help="List repositories without a configured type")
+    ] = False,
+    duplicates: Annotated[
+        Optional[bool], typer.Option("-d", "--duplicates", help="List repositories with more than one configured type")
+    ] = False,
+) -> None:
     """Show information and potential issues with configuration"""
+
+    config = ctx.obj
 
     path = Path(".")
     valid_repo_types = parse_repo_types(config)
@@ -22,7 +28,7 @@ def sniff(config: configparser.ConfigParser, known: bool, unconfigured: bool, du
             [repo_type for repo_type in valid_repo_types if repo_type != "all" and repo_type != "ignore"]
         )
         for repo_type in known_repo_types:
-            click.echo(repo_type)
+            typer.echo(repo_type)
 
     if unconfigured:
         for directory in sorted(path.iterdir()):
@@ -31,7 +37,7 @@ def sniff(config: configparser.ConfigParser, known: bool, unconfigured: bool, du
                 and str(directory) not in valid_repo_types["all"]
                 and str(directory) not in valid_repo_types.get("ignore", [])
             ):
-                click.echo(directory)
+                typer.echo(directory)
 
     if duplicates:
         seen_repos = set()
@@ -43,4 +49,4 @@ def sniff(config: configparser.ConfigParser, known: bool, unconfigured: bool, du
                         duplicate_repos.add(repo)
                     seen_repos.add(repo)
 
-        click.echo("\n".join(sorted(duplicate_repos)))
+        typer.echo("\n".join(sorted(duplicate_repos)))

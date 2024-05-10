@@ -1,14 +1,13 @@
 from pathlib import Path
+from typing import Annotated
 
-import click
+import typer
 
 from repo_man.consts import REPO_TYPES_CFG
 
 
-@click.command
-@click.argument("path", type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path))
-def implode(path: Path) -> None:
+def implode(path: Annotated[Path, typer.Argument(exists=True, file_okay=False, dir_okay=True)]) -> None:
     """Remove repo-man configuration for the specified directory"""
 
-    click.confirm(click.style("Are you sure you want to do this?", fg="yellow"), abort=True)
+    typer.confirm(typer.style("Are you sure you want to do this?", fg="yellow"), abort=True)
     (path / REPO_TYPES_CFG).unlink(missing_ok=True)

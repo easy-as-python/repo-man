@@ -2,18 +2,18 @@ import configparser
 from pathlib import Path
 from typing import Callable
 
-import click
+import typer
 
-from repo_man.commands.add import add
+from repo_man.cli import cli
 
 
 def test_add_clean_confirm(
-    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         (Path(".") / "some-repo").mkdir()
         config = get_config()
-        result = runner.invoke(add, ["some-repo", "-t", "some-type"], input="Y\nY\n", obj=config)
+        result = runner.invoke(cli, ["add", "some-repo", "-t", "some-type"], input="Y\nY\n", obj=config)
         assert result.exit_code == 0
         assert (
             result.output
@@ -38,23 +38,23 @@ known =
 
 
 def test_add_clean_no_confirm_new_file(
-    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         (Path(".") / "some-repo").mkdir()
         config = get_config()
-        result = runner.invoke(add, ["some-repo", "-t", "some-type"], input="\n", obj=config)
+        result = runner.invoke(cli, ["add", "some-repo", "-t", "some-type"], input="\n", obj=config)
         assert result.exit_code == 1
         assert (
             result.output
             == """No repo-man.cfg file found. Do you want to continue? [y/N]: 
-Aborted!
+Aborted.
 """
         )
 
 
 def test_add_with_existing_file(
-    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
@@ -67,7 +67,7 @@ known =
 
         (Path(".") / "some-repo").mkdir()
         config = get_config()
-        result = runner.invoke(add, ["some-repo", "-t", "some-type"], input="Y\n", obj=config)
+        result = runner.invoke(cli, ["add", "some-repo", "-t", "some-type"], input="Y\n", obj=config)
         assert result.exit_code == 0
         assert (
             result.output
@@ -95,7 +95,7 @@ known =
 
 
 def test_add_with_existing_file_and_type(
-    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
@@ -108,7 +108,7 @@ known =
 
         (Path(".") / "some-repo").mkdir()
         config = get_config()
-        result = runner.invoke(add, ["some-repo", "-t", "some-type"], obj=config)
+        result = runner.invoke(cli, ["add", "some-repo", "-t", "some-type"], obj=config)
         assert result.exit_code == 0
         assert result.output == ""
 
@@ -125,7 +125,7 @@ known =
 
 
 def test_add_multiple_types(
-    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
@@ -138,7 +138,9 @@ known =
 
         (Path(".") / "some-repo").mkdir()
         config = get_config()
-        result = runner.invoke(add, ["some-repo", "-t", "some-type", "-t", "some-other-type"], input="Y\n", obj=config)
+        result = runner.invoke(
+            cli, ["add", "some-repo", "-t", "some-type", "-t", "some-other-type"], input="Y\n", obj=config
+        )
         assert result.exit_code == 0
         assert (
             result.output
@@ -167,7 +169,7 @@ known =
 
 
 def test_add_no_action_needed(
-    runner: click.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
@@ -180,7 +182,7 @@ known =
 
         (Path(".") / "some-repo").mkdir()
         config = get_config()
-        result = runner.invoke(add, ["some-repo", "-t", "some-type"], obj=config)
+        result = runner.invoke(cli, ["add", "some-repo", "-t", "some-type"], obj=config)
         assert result.exit_code == 0
         assert result.output == ""
 
