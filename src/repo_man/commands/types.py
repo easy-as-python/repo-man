@@ -1,15 +1,15 @@
-import configparser
+from pathlib import Path
+from typing import Annotated
 
-import click
+import typer
 
-from repo_man.utils import ensure_config_file_exists, pass_config
+from repo_man.utils import ensure_config_file_exists
 
 
-@click.command
-@click.argument("repo", type=click.Path(exists=True, file_okay=False))
-@pass_config
-def types(config: configparser.ConfigParser, repo: str) -> None:
+def types(ctx: typer.Context, repo: Annotated[Path, typer.Argument(exists=True, file_okay=False)]) -> None:
     """List the configured types for a repository"""
+
+    config = ctx.obj
 
     ensure_config_file_exists()
 
@@ -18,8 +18,8 @@ def types(config: configparser.ConfigParser, repo: str) -> None:
     for section in config.sections():
         if section == "ignore":
             continue
-        if repo in config[section]["known"].split("\n"):
+        if str(repo) in config[section]["known"].split("\n"):
             found.add(section)
 
     for repository in sorted(found):
-        click.echo(repository)
+        typer.echo(repository)

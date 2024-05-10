@@ -1,15 +1,15 @@
-import configparser
+from typing import Annotated
 
 import click
+import typer
 
-from repo_man.utils import ensure_config_file_exists, parse_repo_types, pass_config
+from repo_man.utils import ensure_config_file_exists, parse_repo_types
 
 
-@click.command(name="list")
-@click.option("-t", "--type", "repo_types", multiple=True, show_choices=False, required=True)
-@pass_config
-def list_repos(config: configparser.ConfigParser, repo_types: list[str]) -> None:
+def list_repos(ctx: typer.Context, repo_types: Annotated[list[str], typer.Option("-t", "--type")]) -> None:
     """List matching repositories"""
+
+    config = ctx.obj
 
     ensure_config_file_exists()
 
@@ -19,7 +19,7 @@ def list_repos(config: configparser.ConfigParser, repo_types: list[str]) -> None
     for repo_type in repo_types:
         if repo_type not in valid_repo_types:
             repo_list = "\n\t".join(valid_repo_types)
-            raise click.BadParameter(f"Invalid repository type '{repo_type}'. Valid types are:\n\n\t{repo_list}")
+            raise typer.BadParameter(f"Invalid repository type '{repo_type}'. Valid types are:\n\n\t{repo_list}")
         found_repos.update(valid_repo_types[repo_type])
 
     repos = sorted(found_repos)
@@ -27,4 +27,4 @@ def list_repos(config: configparser.ConfigParser, repo_types: list[str]) -> None
     if len(repos) > 25:
         click.echo_via_pager("\n".join(repos))
     else:
-        click.echo("\n".join(repos))
+        typer.echo("\n".join(repos))

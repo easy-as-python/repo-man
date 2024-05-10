@@ -1,11 +1,9 @@
 import configparser
 from pathlib import Path
 
-import click
+import typer
 
 from repo_man.consts import REPO_TYPES_CFG
-
-pass_config = click.make_pass_decorator(configparser.ConfigParser)
 
 
 def parse_repo_types(config: configparser.ConfigParser) -> dict[str, set[str]]:
@@ -29,9 +27,9 @@ def get_valid_repo_types() -> list[str]:
 def ensure_config_file_exists(confirm: bool = False) -> None:
     if not Path(REPO_TYPES_CFG).exists():
         if confirm:
-            click.confirm(
-                click.style(f"No {REPO_TYPES_CFG} file found. Do you want to continue?", fg="yellow"), abort=True
+            typer.confirm(
+                typer.style(f"No {REPO_TYPES_CFG} file found. Do you want to continue?", fg="yellow"), abort=True
             )
         else:
-            click.echo(click.style(f"No {REPO_TYPES_CFG} file found.", fg="red"))
+            typer.secho(f"No {REPO_TYPES_CFG} file found.", fg="red")
             raise SystemExit(1)

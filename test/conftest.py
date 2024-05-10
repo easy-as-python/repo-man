@@ -2,7 +2,7 @@ import configparser
 from typing import Callable
 
 import pytest
-from click.testing import CliRunner
+from typer.testing import CliRunner
 
 from repo_man.consts import REPO_TYPES_CFG
 
