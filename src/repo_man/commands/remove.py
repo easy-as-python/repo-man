@@ -10,7 +10,9 @@ from repo_man.utils import ensure_config_file_exists, parse_repo_types
 def remove(
     ctx: typer.Context,
     repo: Annotated[Path, typer.Argument(exists=True, file_okay=False)],
-    repo_types: Annotated[list[str], typer.Option("-t", "--type", help="The types from which to remove the repository")],
+    repo_types: Annotated[
+        list[str], typer.Option("-t", "--type", help="The types from which to remove the repository")
+    ],
 ) -> None:
     """Remove a repository from some or all types"""
 

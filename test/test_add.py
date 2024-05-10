@@ -138,7 +138,9 @@ known =
 
         (Path(".") / "some-repo").mkdir()
         config = get_config()
-        result = runner.invoke(cli, ["add", "some-repo", "-t", "some-type", "-t", "some-other-type"], input="Y\n", obj=config)
+        result = runner.invoke(
+            cli, ["add", "some-repo", "-t", "some-type", "-t", "some-other-type"], input="Y\n", obj=config
+        )
         assert result.exit_code == 0
         assert (
             result.output

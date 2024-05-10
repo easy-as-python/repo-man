@@ -9,8 +9,12 @@ from repo_man.utils import parse_repo_types
 def sniff(
     ctx: typer.Context,
     known: Annotated[Optional[bool], typer.Option("-k", "--known", help="List known repository types")] = False,
-    unconfigured: Annotated[Optional[bool], typer.Option("-u", "--unconfigured", help="List repositories without a configured type")] = False,
-    duplicates: Annotated[Optional[bool], typer.Option("-d", "--duplicates", help="List repositories with more than one configured type")] = False,
+    unconfigured: Annotated[
+        Optional[bool], typer.Option("-u", "--unconfigured", help="List repositories without a configured type")
+    ] = False,
+    duplicates: Annotated[
+        Optional[bool], typer.Option("-d", "--duplicates", help="List repositories with more than one configured type")
+    ] = False,
 ) -> None:
     """Show information and potential issues with configuration"""
 

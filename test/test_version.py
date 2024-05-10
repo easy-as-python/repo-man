@@ -1,8 +1,12 @@
-from repo_man import cli
+from unittest.mock import patch
+
+import typer
+
+from repo_man.cli import cli
 
 
-def test_version(runner, monkeypatch):
-    monkeypatch.setattr(cli, "RELEASE_VERSION", "0.0.0")
-    result = runner.invoke(cli.cli, ["--version"])
+@patch("repo_man.cli.RELEASE_VERSION", "0.0.0")
+def test_version(runner: typer.testing.CliRunner) -> None:
+    result = runner.invoke(cli, ["--version"])
     assert result.exit_code == 0
-    assert result.output.strip() == f"0.0.0"
+    assert result.output.strip() == "0.0.0"

@@ -11,7 +11,7 @@ from repo_man.commands.list_repos import list_repos
 from repo_man.commands.remove import remove
 from repo_man.commands.sniff import sniff
 from repo_man.commands.types import types
-from repo_man.consts import REPO_TYPES_CFG, RELEASE_VERSION
+from repo_man.consts import RELEASE_VERSION, REPO_TYPES_CFG
 
 
 def version_callback(value: bool) -> None:
@@ -19,7 +19,9 @@ def version_callback(value: bool) -> None:
         print(RELEASE_VERSION)
         raise typer.Exit()
 
+
 cli = typer.Typer(context_settings={"help_option_names": ["-h", "--help"]})
+
 
 @cli.callback(invoke_without_command=True)
 def default(
@@ -35,6 +37,7 @@ def default(
     config.read(REPO_TYPES_CFG)
     context.obj = config
 
+
 cli.command()(add)
 cli.command()(edit)
 cli.command()(types)
@@ -43,6 +46,7 @@ cli.command()(init)
 cli.command(name="list")(list_repos)
 cli.command()(remove)
 cli.command()(sniff)
+
 
 def main() -> None:  # pragma: no cover
     cli()
