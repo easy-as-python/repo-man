@@ -51,12 +51,24 @@ docs = [
 # Tool configuration #
 ######################
 
-[tool.black]
+[tool.ruff]
 line-length = 120
-target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
 
-[tool.isort]
-profile = "black"
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
 
 [tool.mypy]
 strict = true
@@ -116,12 +128,10 @@ commands = [
 [tool.tox.env.format]
 skip_install = true
 deps = [
-    "black",
-    "isort",
+    "ruff",
 ]
 commands = [
-    ["black", { replace = "posargs", default = ["--check", "--diff", "src", "test"], extend = true }],
-    ["isort", { replace = "posargs", default = ["--check", "--diff", "src", "test"], extend = true }],
+    ["ruff", "format", { replace = "posargs", default = ["--check", "--diff", "src", "test"], extend = true }],
 ]
 
 [tool.tox.env.lint]
