@@ -36,6 +36,6 @@ Once you've installed tox, you can run the `tox` command in the root of the proj
 ### Linting, type checking, and formatting
 
 Several other project development activities such as linting, type checking, and formatting are also available as tox environments.
-You can see all available tasks in `setup.cfg`.
+You can see all available tasks in `pyproject.toml`.
 These will be run when you open a pull request, and the checks will fail if you haven't fixed any issues locally.
 If this happens, run the tasks locally to find and fix any issues, then push your changes.
