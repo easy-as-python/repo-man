@@ -116,13 +116,16 @@ commands = [
 ]
 
 [tool.tox.env.typecheck]
+extras = [
+    "docs",
+]
 deps = [
     { replace = "ref", of = ["tool", "tox", "env_run_base", "deps"], extend = true },
     "mypy",
     "types-termcolor",
 ]
 commands = [
-    ["mypy", { replace = "posargs", default = ["src", "test"], extend = true }],
+    ["mypy", { replace = "posargs", default = ["src", "test", "docs"], extend = true }],
 ]
 
 [tool.tox.env.format]
@@ -140,7 +143,7 @@ deps = [
     "ruff",
 ]
 commands = [
-    ["ruff", "check", { replace = "posargs", default = ["src", "test"], extend = true }],
+    ["ruff", "check", { replace = "posargs", default = ["src", "test", "docs"], extend = true }],
 ]
 
 [tool.tox.env.docs]

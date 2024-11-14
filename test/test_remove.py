@@ -14,7 +14,7 @@ def test_remove_clean(runner: typer.testing.CliRunner, get_config: Callable[[], 
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
     some-repo
 """
             )
@@ -37,7 +37,7 @@ def test_remove_when_invalid_type(
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
     some-repo
 """
             )
@@ -54,7 +54,7 @@ known =
             assert (
                 config_file.read()
                 == """[foo]
-known = 
+known =
     some-repo
 """
             )
@@ -69,11 +69,11 @@ def test_remove_when_unused_type(
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
     some-repo
 
 [bar]
-known = 
+known =
     some-other-repo
 """
             )
@@ -83,7 +83,5 @@ known =
         assert result.exit_code == 1
         assert (
             result.output
-            == """Repository 'some-repo' is not configured for type 'bar'. Continue? [y/N]: 
-Aborted.
-"""
+            == """Repository 'some-repo' is not configured for type 'bar'. Continue? [y/N]: \nAborted.\n"""
         )

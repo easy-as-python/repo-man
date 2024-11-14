@@ -30,7 +30,8 @@ def add(
             config.add_section(repo_type)
 
         if "known" not in config[repo_type] or str(repo) not in config[repo_type]["known"].split("\n"):
-            config.set(repo_type, "known", f"{original_config}\n{repo}")
+            ordered_repos = sorted(original_config.split("\n") + [str(repo)])
+            config.set(repo_type, "known", "\n".join(ordered_repos))
 
     with open(REPO_TYPES_CFG, "w") as config_file:
         config.write(config_file)

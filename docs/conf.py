@@ -13,6 +13,10 @@
 import datetime
 import os
 from importlib import metadata
+from typing import Any
+
+from sphinx.application import Sphinx
+
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -21,9 +25,9 @@ from importlib import metadata
 
 CURRENT_YEAR = datetime.datetime.now().year
 
-project = 'repo-man'
-copyright = f'{CURRENT_YEAR}, Dane Hillard'
-author = 'Dane Hillard'
+project = "repo-man"
+copyright = f"{CURRENT_YEAR}, Dane Hillard"
+author = "Dane Hillard"
 PACKAGE_VERSION = metadata.version("repo-man")
 version = PACKAGE_VERSION
 release = PACKAGE_VERSION
@@ -35,21 +39,20 @@ release = PACKAGE_VERSION
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'myst_parser',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autodoc.typehints',
+    "myst_parser",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autodoc.typehints",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-nitpick_ignore = [('py:class', 'typer.models.Context')]
-
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+nitpick_ignore = [("py:class", "typer.models.Context")]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -57,7 +60,7 @@ nitpick_ignore = [('py:class', 'typer.models.Context')]
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'furo'
+html_theme = "furo"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -83,19 +86,22 @@ if os.environ.get("READTHEDOCS") == "True":
     PROJECT_ROOT = Path(__file__).parent.parent
     PACKAGE_ROOT = PROJECT_ROOT / "src" / "repo_man"
 
-    def run_apidoc(_):
+    def run_apidoc(_: Any) -> None:
         from sphinx.ext import apidoc
-        apidoc.main([
-            "--force",
-            "--implicit-namespaces",
-            "--module-first",
-            "--separate",
-            "-o",
-            str(PROJECT_ROOT / "docs" / "reference"),
-            str(PACKAGE_ROOT),
-            str(PACKAGE_ROOT / "*.c"),
-            str(PACKAGE_ROOT / "*.so"),
-        ])
 
-    def setup(app):
-        app.connect('builder-inited', run_apidoc)
+        apidoc.main(
+            [
+                "--force",
+                "--implicit-namespaces",
+                "--module-first",
+                "--separate",
+                "-o",
+                str(PROJECT_ROOT / "docs" / "reference"),
+                str(PACKAGE_ROOT),
+                str(PACKAGE_ROOT / "*.c"),
+                str(PACKAGE_ROOT / "*.so"),
+            ]
+        )
+
+    def setup(app: Sphinx) -> None:
+        app.connect("builder-inited", run_apidoc)

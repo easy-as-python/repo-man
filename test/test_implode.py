@@ -28,10 +28,5 @@ def test_implode_when_config_present_no_confirm(runner: typer.testing.CliRunner)
 
         result = runner.invoke(cli, ["implode", "."], input="\n")
         assert result.exit_code == 1
-        assert (
-            result.output
-            == """Are you sure you want to do this? [y/N]: 
-Aborted.
-"""
-        )
+        assert result.output == """Are you sure you want to do this? [y/N]: \nAborted.\n"""
         assert Path("repo-man.cfg").exists()

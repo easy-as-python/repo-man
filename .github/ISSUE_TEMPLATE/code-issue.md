@@ -2,9 +2,8 @@
 name: Code issue
 about: Identify an issue with the source code
 title: A concise summary of the issue should go here
-labels: ''
-assignees: ''
-
+labels: ""
+assignees: ""
 ---
 
 [Line(s) of code in question](<GitHub link to highlighted file lines>)
