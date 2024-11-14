@@ -7,9 +7,7 @@ from typer.testing import CliRunner
 from repo_man.cli import cli
 
 
-def test_add_clean_confirm(
-    runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]
-) -> None:
+def test_add_clean_confirm(runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         (Path(".") / "some-repo").mkdir()
         config = get_config()
@@ -37,9 +35,7 @@ known =
             )
 
 
-def test_add_clean_no_confirm_new_file(
-    runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]
-) -> None:
+def test_add_clean_no_confirm_new_file(runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         (Path(".") / "some-repo").mkdir()
         config = get_config()
@@ -53,9 +49,7 @@ Aborted.
         )
 
 
-def test_add_with_existing_file(
-    runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]
-) -> None:
+def test_add_with_existing_file(runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -124,9 +118,7 @@ known =
             )
 
 
-def test_add_multiple_types(
-    runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]
-) -> None:
+def test_add_multiple_types(runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -168,9 +160,7 @@ known =
             )
 
 
-def test_add_no_action_needed(
-    runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]
-) -> None:
+def test_add_no_action_needed(runner: CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
