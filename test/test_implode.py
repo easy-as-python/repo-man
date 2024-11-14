@@ -30,7 +30,7 @@ def test_implode_when_config_present_no_confirm(runner: typer.testing.CliRunner)
         assert result.exit_code == 1
         assert (
             result.output
-            == """Are you sure you want to do this? [y/N]: 
+            == """Are you sure you want to do this? [y/N]:
 Aborted.
 """
         )

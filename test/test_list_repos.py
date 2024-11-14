@@ -22,7 +22,7 @@ def test_list_repos_with_matches(
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
 	some-repo
 	some-other-repo
 
@@ -77,7 +77,7 @@ some-repo-26"""
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 f"""[foo]
-known = 
+known =
 	{config_list}
 
 """
@@ -96,11 +96,11 @@ def test_list_repos_for_multiple_tags(
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
     some-repo
 
 [bar]
-known = 
+known =
     some-other-repo
 
 """
@@ -124,11 +124,11 @@ def test_list_repos_when_invalid_type(
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
     some-repo
 
 [bar]
-known = 
+known =
     some-other-repo
 
 """

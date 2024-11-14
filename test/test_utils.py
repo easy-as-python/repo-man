@@ -8,7 +8,7 @@ def test_get_valid_repo_types(runner: typer.testing.CliRunner) -> None:
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
     some-repo
 """
             )

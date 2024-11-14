@@ -12,15 +12,15 @@ def test_known(runner: typer.testing.CliRunner, get_config: Callable[[], configp
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
 	some-repo
 
 [bar]
-known = 
+known =
 	some-other-repo
 
 [ignore]
-known = 
+known =
 	yet-another-repo
 
 """
@@ -41,7 +41,7 @@ def test_unconfigured(runner: typer.testing.CliRunner, get_config: Callable[[], 
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
 	some-repo
 
 """
@@ -60,12 +60,12 @@ def test_duplicates(runner: typer.testing.CliRunner, get_config: Callable[[], co
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
 	some-repo
 	some-other-repo
 
 [bar]
-known = 
+known =
 	some-repo
 	some-other-repo
 	yet-another-repo

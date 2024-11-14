@@ -25,11 +25,11 @@ def test_types_when_configured(
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
 	some-repo
 
 [ignore]
-known = 
+known =
 	some-other-repo
 
 """
@@ -50,7 +50,7 @@ def test_types_when_not_configured(
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[foo]
-known = 
+known =
 	some-other-repo
 
 """
@@ -71,7 +71,7 @@ def test_types_when_ignored(
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
                 """[ignore]
-known = 
+known =
 	some-repo
 
 """

@@ -20,7 +20,7 @@ Use alpha versioning during initial development such that all versions are monot
 
 ## Consequences
 
-- Consumers won't know when a change is breaking, and should assume *every* change is breaking
+- Consumers won't know when a change is breaking, and should assume _every_ change is breaking
 - This decision will need to be amended once the project matures into a stable release pattern
 - There is sometimes confusion about versions like `0.0.996` and people try to install `0.99.6` or similar instead
 - Every released change during initial development will simply increase the last portion of the version string by one

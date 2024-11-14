@@ -13,6 +13,10 @@
 import datetime
 import os
 from importlib import metadata
+from typing import Any
+
+from sphinx.application import Sphinx
+
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -83,7 +87,7 @@ if os.environ.get("READTHEDOCS") == "True":
     PROJECT_ROOT = Path(__file__).parent.parent
     PACKAGE_ROOT = PROJECT_ROOT / "src" / "repo_man"
 
-    def run_apidoc(_):
+    def run_apidoc(_: Any) -> None:
         from sphinx.ext import apidoc
         apidoc.main([
             "--force",
@@ -97,5 +101,5 @@ if os.environ.get("READTHEDOCS") == "True":
             str(PACKAGE_ROOT / "*.so"),
         ])
 
-    def setup(app):
+    def setup(app: Sphinx) -> None:
         app.connect('builder-inited', run_apidoc)
