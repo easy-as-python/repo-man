@@ -10,6 +10,7 @@ description = "Manage repositories of a variety of different types."
 authors = [
     { name = "Dane Hillard", email = "github@danehillard.com" }
 ]
+license-files = ["LICENSE"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -20,11 +21,11 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
     "typer>=0.12.5"
 ]
+dynamic = ["readme"]
 
 [project.urls]
 Documentation = "https://repo-man.readthedocs.org"
@@ -45,6 +46,9 @@ docs = [
     "sphinx",
     "sphinx-autobuild",
 ]
+
+[tool.setuptools.dynamic]
+readme = { file = "README.md", content-type = "text/markdown" }
 
 ######################
 # Tool configuration #
