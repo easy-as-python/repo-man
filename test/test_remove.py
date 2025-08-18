@@ -1,6 +1,6 @@
 import configparser
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 import typer
 
@@ -83,5 +83,5 @@ known =
         assert result.exit_code == 1
         assert (
             result.output
-            == """Repository 'some-repo' is not configured for type 'bar'. Continue? [y/N]: \nAborted.\n"""
+            == """Repository 'some-repo' is not configured for type 'bar'. Continue? [y/N]:Aborted.\n """
         )

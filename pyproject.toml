@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 name = "repo-man"
 version = "0.0.11"
 description = "Manage repositories of a variety of different types."
@@ -14,7 +14,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -72,7 +71,7 @@ select = [
 
 [tool.mypy]
 strict = true
-python_version = "3.9"
+python_version = "3.10"
 warn_unused_configs = true
 show_error_context = true
 pretty = true
@@ -100,7 +99,7 @@ source = [
 ]
 
 [tool.tox]
-envlist = ["py39", "py310", "py311", "py312", "py313"]
+envlist = ["py310", "py311", "py312", "py313"]
 isolated_build = true
 
 [tool.tox.env_run_base]

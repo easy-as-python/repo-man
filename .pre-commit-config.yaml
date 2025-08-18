@@ -38,13 +38,13 @@ repos:
     rev: v1.13.0
     hooks:
       - id: mypy
-        additional_dependencies: [typer, types-termcolor]
+        additional_dependencies: [pytest, typer, types-termcolor]
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.19.0
     hooks:
       - id: pyupgrade
-        args: [--py39-plus]
+        args: [--py310-plus]
 
   ############
   # Markdown #

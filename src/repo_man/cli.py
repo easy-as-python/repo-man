@@ -1,5 +1,5 @@
 import configparser
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
 
@@ -27,7 +27,7 @@ cli = typer.Typer(context_settings={"help_option_names": ["-h", "--help"]})
 def default(
     context: typer.Context,
     version: Annotated[
-        Optional[bool],
+        bool | None,
         typer.Option("--version", callback=version_callback, is_eager=True, help="Print the version of this tool."),
     ] = None,
 ) -> None:
