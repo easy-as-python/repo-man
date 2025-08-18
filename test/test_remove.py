@@ -1,6 +1,6 @@
 import configparser
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 import typer
 
@@ -82,6 +82,5 @@ known =
         result = runner.invoke(cli, ["remove", "-t", "bar", "some-repo"], obj=config)
         assert result.exit_code == 1
         assert (
-            result.output
-            == """Repository 'some-repo' is not configured for type 'bar'. Continue? [y/N]: \nAborted.\n"""
+            result.output == """Repository 'some-repo' is not configured for type 'bar'. Continue? [y/N]:Aborted.\n """
         )
