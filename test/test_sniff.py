@@ -2,12 +2,12 @@ import configparser
 from collections.abc import Callable
 from pathlib import Path
 
-import typer
+from typer import testing
 
 from repo_man.cli import cli
 
 
-def test_known(runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
+def test_known(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -34,7 +34,7 @@ known =
         assert result.output == "bar\nfoo\n"
 
 
-def test_unconfigured(runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
+def test_unconfigured(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
         Path("some-other-repo").mkdir()
@@ -55,7 +55,7 @@ known =
         assert result.output == "some-other-repo\n"
 
 
-def test_duplicates(runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
+def test_duplicates(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
