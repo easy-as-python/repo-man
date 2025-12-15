@@ -1,11 +1,11 @@
 from pathlib import Path
 
-import typer
+from typer import testing
 
 from repo_man.cli import cli
 
 
-def test_init_clean(runner: typer.testing.CliRunner) -> None:
+def test_init_clean(runner: testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         assert not Path("repo-man.cfg").exists()
 
@@ -15,7 +15,7 @@ def test_init_clean(runner: typer.testing.CliRunner) -> None:
         assert Path("repo-man.cfg").exists()
 
 
-def test_init_with_existing_confirm(runner: typer.testing.CliRunner) -> None:
+def test_init_with_existing_confirm(runner: testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(
@@ -33,7 +33,7 @@ known =
             assert config_file.read() == ""
 
 
-def test_init_with_existing_no_confirm(runner: typer.testing.CliRunner) -> None:
+def test_init_with_existing_no_confirm(runner: testing.CliRunner) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
             config_file.write(

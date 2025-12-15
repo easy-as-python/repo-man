@@ -2,12 +2,12 @@ import configparser
 from collections.abc import Callable
 from unittest.mock import Mock, patch
 
-import typer
+from typer import testing
 
 from repo_man.cli import cli
 
 
-def test_list_repos_clean(runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
+def test_list_repos_clean(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         config = get_config()
         result = runner.invoke(cli, ["list", "-t", "all"], obj=config)
@@ -16,7 +16,7 @@ def test_list_repos_clean(runner: typer.testing.CliRunner, get_config: Callable[
 
 
 def test_list_repos_with_matches(
-    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
@@ -42,7 +42,7 @@ some-repo
 
 @patch("repo_man.commands.list_repos.click.echo_via_pager")
 def test_list_repos_when_long(
-    mock_echo_via_pager: Mock, runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    mock_echo_via_pager: Mock, runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     all_repos = """some-repo-1
 some-repo-2
@@ -90,7 +90,7 @@ known =
 
 
 def test_list_repos_for_multiple_tags(
-    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:
@@ -118,7 +118,7 @@ some-repo
 
 
 def test_list_repos_when_invalid_type(
-    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         with open("repo-man.cfg", "w") as config_file:

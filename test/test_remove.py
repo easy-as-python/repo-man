@@ -2,12 +2,12 @@ import configparser
 from collections.abc import Callable
 from pathlib import Path
 
-import typer
+from typer import testing
 
 from repo_man.cli import cli
 
 
-def test_remove_clean(runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
+def test_remove_clean(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
 
@@ -29,7 +29,7 @@ known =
 
 
 def test_remove_when_invalid_type(
-    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
@@ -61,7 +61,7 @@ known =
 
 
 def test_remove_when_unused_type(
-    runner: typer.testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
 ) -> None:
     with runner.isolated_filesystem():
         Path("some-repo").mkdir()
