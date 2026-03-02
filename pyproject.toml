@@ -19,6 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
 ]
@@ -43,7 +44,7 @@ repo-man = "repo_man.cli:main"
 docs = [
     "furo",
     "myst-parser",
-    "sphinx",
+    "sphinx>=9.0.4,<9.1.0",  # 9.1.0+ only supports Python 3.12+
     "sphinx-autobuild",
 ]
 
@@ -103,7 +104,7 @@ source = [
 ]
 
 [tool.tox]
-envlist = ["py310", "py311", "py312", "py313"]
+envlist = ["py310", "py311", "py312", "py313", "py314"]
 isolated_build = true
 
 [tool.tox.env_run_base]

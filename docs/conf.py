@@ -42,7 +42,10 @@ extensions = [
     "myst_parser",
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
-    "sphinx.ext.autodoc.typehints",
+]
+
+nitpick_ignore_regex = [
+    (r"py:obj", r"typing\.Annotated\[.*"),
 ]
 
 # Add any paths that contain templates here, relative to this directory.
