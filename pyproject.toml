@@ -43,7 +43,7 @@ repo-man = "repo_man.cli:main"
 docs = [
     "furo",
     "myst-parser",
-    "sphinx",
+    "sphinx>=9.0.4,<9.1.0",  # 9.1.0+ only supports Python 3.12+
     "sphinx-autobuild",
 ]
 
