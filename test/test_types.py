@@ -1,4 +1,5 @@
 import configparser
+import os
 from collections.abc import Callable
 from pathlib import Path
 
@@ -7,22 +8,28 @@ from typer import testing
 from repo_man.cli import cli
 
 
-def test_types_clean(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
-    with runner.isolated_filesystem():
-        Path("some-repo").mkdir()
-        config = get_config()
-        result = runner.invoke(cli, ["types", "some-repo"], obj=config)
-        assert result.exit_code == 1
-        assert result.output == "No repo-man.cfg file found.\n"
+def test_types_clean(
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
+) -> None:
+    repo = tmp_path / "some-repo"
+    repo.mkdir()
+    os.chdir(tmp_path)
+    config = get_config()
+    result = runner.invoke(cli, ["types", "some-repo"], obj=config)
+    assert result.exit_code == 1
+    assert result.output == "No repo-man.cfg file found.\n"
 
 
-def test_types_when_configured(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
-    with runner.isolated_filesystem():
-        Path("some-repo").mkdir()
+def test_types_when_configured(
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
+) -> None:
+    repo = tmp_path / "some-repo"
+    repo.mkdir()
+    os.chdir(tmp_path)
 
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                """[foo]
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            """[foo]
 known =
 	some-repo
 
@@ -31,49 +38,53 @@ known =
 	some-other-repo
 
 """
-            )
+        )
 
-        config = get_config()
-        result = runner.invoke(cli, ["types", "some-repo"], obj=config)
-        assert result.exit_code == 0
-        assert result.output == "foo\n"
+    config = get_config()
+    result = runner.invoke(cli, ["types", "some-repo"], obj=config)
+    assert result.exit_code == 0
+    assert result.output == "foo\n"
 
 
 def test_types_when_not_configured(
-    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
 ) -> None:
-    with runner.isolated_filesystem():
-        Path("some-repo").mkdir()
+    repo = tmp_path / "some-repo"
+    repo.mkdir()
+    os.chdir(tmp_path)
 
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                """[foo]
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            """[foo]
 known =
 	some-other-repo
 
 """
-            )
+        )
 
-        config = get_config()
-        result = runner.invoke(cli, ["types", "some-repo"], obj=config)
-        assert result.exit_code == 0
-        assert result.output == ""
+    config = get_config()
+    result = runner.invoke(cli, ["types", "some-repo"], obj=config)
+    assert result.exit_code == 0
+    assert result.output == ""
 
 
-def test_types_when_ignored(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
-    with runner.isolated_filesystem():
-        Path("some-repo").mkdir()
+def test_types_when_ignored(
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
+) -> None:
+    repo = tmp_path / "some-repo"
+    repo.mkdir()
+    os.chdir(tmp_path)
 
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                """[ignore]
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            """[ignore]
 known =
 	some-repo
 
 """
-            )
+        )
 
-        config = get_config()
-        result = runner.invoke(cli, ["types", "some-repo"], obj=config)
-        assert result.exit_code == 0
-        assert result.output == ""
+    config = get_config()
+    result = runner.invoke(cli, ["types", "some-repo"], obj=config)
+    assert result.exit_code == 0
+    assert result.output == ""
