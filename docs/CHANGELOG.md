@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.2.0] - 2026-06-22
+
+### Fixed
+
+- Fix independent use of Click, which is now vendored in Typer
+- Fix deprecated Typer `isolated_filesystem` usage in tests
+
+### Removed
+
+- Remove support for Python 3.10
+
 ### Added
 
 - Add support for Python 3.14

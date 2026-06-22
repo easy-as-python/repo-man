@@ -1,4 +1,4 @@
-import typer
+import click
 
 from repo_man.consts import REPO_TYPES_CFG
 from repo_man.utils import ensure_config_file_exists
@@ -9,4 +9,4 @@ def edit() -> None:
 
     ensure_config_file_exists()
 
-    typer.edit(filename=REPO_TYPES_CFG)
+    click.edit(filename=REPO_TYPES_CFG)

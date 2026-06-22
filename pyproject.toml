@@ -1,12 +1,13 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.11.23,<0.12.0"]
+build-backend = "uv_build"
 
 [project]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 name = "repo-man"
-version = "0.1.2"
+version = "0.2.0"
 description = "Manage repositories of a variety of different types."
+readme = "README.md"
 authors = [
     { name = "Dane Hillard", email = "github@danehillard.com" }
 ]
@@ -15,7 +16,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -24,18 +24,14 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 dependencies = [
-    "typer>=0.12.5"
+    "click>=8.4.1",
+    "typer>=0.26.7",
 ]
-dynamic = ["readme"]
 
 [project.urls]
 Documentation = "https://repo-man.readthedocs.org"
 Repository = "https://github.com/easy-as-python/repo-man"
 Issues = "https://github.com/easy-as-python/repo-man/issues"
-
-[tool.setuptools.packages.find]
-where = ["src"]
-exclude = ["test*"]
 
 [project.scripts]
 repo-man = "repo_man.cli:main"
@@ -48,8 +44,8 @@ docs = [
     "sphinx-autobuild",
 ]
 
-[tool.setuptools.dynamic]
-readme = { file = "README.md", content-type = "text/markdown" }
+[tool.uv.build-backend]
+module-name = "repo_man"
 
 ######################
 # Tool configuration #
@@ -76,7 +72,7 @@ select = [
 
 [tool.mypy]
 strict = true
-python_version = "3.10"
+python_version = "3.11"
 warn_unused_configs = true
 show_error_context = true
 pretty = true
@@ -93,7 +89,7 @@ source = ["repo_man"]
 branch = true
 
 [tool.coverage.report]
-fail_under = 90.00
+fail_under = 95.00
 show_missing = true
 skip_covered = true
 
@@ -104,7 +100,7 @@ source = [
 ]
 
 [tool.tox]
-envlist = ["py310", "py311", "py312", "py313", "py314"]
+env_list = ["py311", "py312", "py313", "py314"]
 isolated_build = true
 
 [tool.tox.env_run_base]

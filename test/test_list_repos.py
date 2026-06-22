@@ -1,5 +1,7 @@
 import configparser
+import os
 from collections.abc import Callable
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 from typer import testing
@@ -7,43 +9,52 @@ from typer import testing
 from repo_man.cli import cli
 
 
-def test_list_repos_clean(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
-    with runner.isolated_filesystem():
-        config = get_config()
-        result = runner.invoke(cli, ["list", "-t", "all"], obj=config)
-        assert result.exit_code == 1
-        assert result.output == "No repo-man.cfg file found.\n"
+def test_list_repos_clean(
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
+) -> None:
+    os.chdir(tmp_path)
+
+    config = get_config()
+    result = runner.invoke(cli, ["list", "-t", "all"], obj=config)
+    assert result.exit_code == 1
+    assert result.output == "No repo-man.cfg file found.\n"
 
 
 def test_list_repos_with_matches(
-    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
 ) -> None:
-    with runner.isolated_filesystem():
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                """[foo]
+    os.chdir(tmp_path)
+
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            """[foo]
 known =
 	some-repo
 	some-other-repo
 
 """
-            )
+        )
 
-        config = get_config()
-        result = runner.invoke(cli, ["list", "-t", "all"], obj=config)
-        assert result.exit_code == 0
-        assert (
-            result.output
-            == """some-other-repo
+    config = get_config()
+    result = runner.invoke(cli, ["list", "-t", "all"], obj=config)
+    assert result.exit_code == 0
+    assert (
+        result.output
+        == """some-other-repo
 some-repo
 """
-        )
+    )
 
 
 @patch("repo_man.commands.list_repos.click.echo_via_pager")
 def test_list_repos_when_long(
-    mock_echo_via_pager: Mock, runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    mock_echo_via_pager: Mock,
+    runner: testing.CliRunner,
+    get_config: Callable[[], configparser.ConfigParser],
+    tmp_path: Path,
 ) -> None:
+    os.chdir(tmp_path)
+
     all_repos = """some-repo-1
 some-repo-2
 some-repo-3
@@ -73,29 +84,29 @@ some-repo-26"""
 
     config_list = "\n	".join(all_repos.split("\n"))
 
-    with runner.isolated_filesystem():
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                f"""[foo]
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            f"""[foo]
 known =
 	{config_list}
 
 """
-            )
+        )
 
-        config = get_config()
-        result = runner.invoke(cli, ["list", "-t", "all"], obj=config)
-        assert result.exit_code == 0
-        mock_echo_via_pager.assert_called_once_with("\n".join(sorted(all_repos.split("\n"))))
+    config = get_config()
+    result = runner.invoke(cli, ["list", "-t", "all"], obj=config)
+    assert result.exit_code == 0
+    mock_echo_via_pager.assert_called_once_with("\n".join(sorted(all_repos.split("\n"))))
 
 
 def test_list_repos_for_multiple_tags(
-    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
 ) -> None:
-    with runner.isolated_filesystem():
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                """[foo]
+    os.chdir(tmp_path)
+
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            """[foo]
 known =
     some-repo
 
@@ -103,27 +114,28 @@ known =
 known =
     some-other-repo
 
-"""
-            )
-
-        config = get_config()
-        result = runner.invoke(cli, ["list", "-t", "foo", "-t", "bar"], obj=config)
-        assert result.exit_code == 0
-        assert (
-            result.output
-            == """some-other-repo
-some-repo
 """
         )
 
+    config = get_config()
+    result = runner.invoke(cli, ["list", "-t", "foo", "-t", "bar"], obj=config)
+    assert result.exit_code == 0
+    assert (
+        result.output
+        == """some-other-repo
+some-repo
+"""
+    )
+
 
 def test_list_repos_when_invalid_type(
-    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
 ) -> None:
-    with runner.isolated_filesystem():
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                """[foo]
+    os.chdir(tmp_path)
+
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            """[foo]
 known =
     some-repo
 
@@ -132,13 +144,13 @@ known =
     some-other-repo
 
 """
-            )
+        )
 
-        config = get_config()
-        result = runner.invoke(cli, ["list", "-t", "baz"], obj=config)
-        assert result.exit_code == 2
-        print(result.output)
-        assert "│ Invalid value: Invalid repository type 'baz'. Valid types are:" in result.output
-        assert "│         all" in result.output
-        assert "│         foo" in result.output
-        assert "│         bar" in result.output
+    config = get_config()
+    result = runner.invoke(cli, ["list", "-t", "baz"], obj=config)
+    assert result.exit_code == 2
+    print(result.output)
+    assert "│ Invalid value: Invalid repository type 'baz'. Valid types are:" in result.output
+    assert "│         all" in result.output
+    assert "│         foo" in result.output
+    assert "│         bar" in result.output

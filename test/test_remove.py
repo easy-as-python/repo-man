@@ -1,4 +1,5 @@
 import configparser
+import os
 from collections.abc import Callable
 from pathlib import Path
 
@@ -7,68 +8,73 @@ from typer import testing
 from repo_man.cli import cli
 
 
-def test_remove_clean(runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]) -> None:
-    with runner.isolated_filesystem():
-        Path("some-repo").mkdir()
+def test_remove_clean(
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
+) -> None:
+    repo = tmp_path / "some-repo"
+    repo.mkdir()
+    os.chdir(tmp_path)
 
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                """[foo]
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            """[foo]
 known =
     some-repo
 """
-            )
+        )
 
-        config = get_config()
-        result = runner.invoke(cli, ["remove", "-t", "foo", "some-repo"], obj=config)
-        assert result.exit_code == 0
-        assert result.output == ""
+    config = get_config()
+    result = runner.invoke(cli, ["remove", "-t", "foo", "some-repo"], obj=config)
+    assert result.exit_code == 0
+    assert result.output == ""
 
-        with open("repo-man.cfg") as config_file:
-            assert config_file.read() == "[foo]\nknown = \n\n"
+    with open("repo-man.cfg") as config_file:
+        assert config_file.read() == "[foo]\nknown = \n\n"
 
 
 def test_remove_when_invalid_type(
-    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
 ) -> None:
-    with runner.isolated_filesystem():
-        Path("some-repo").mkdir()
+    repo = tmp_path / "some-repo"
+    repo.mkdir()
+    os.chdir(tmp_path)
 
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                """[foo]
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            """[foo]
 known =
     some-repo
 """
-            )
+        )
 
-        config = get_config()
-        result = runner.invoke(cli, ["remove", "-t", "bar", "some-repo"], obj=config)
-        print(result.output)
-        assert result.exit_code == 2
-        assert "│ Invalid value: Invalid repository type 'bar'. Valid types are:" in result.output
-        assert "│         all" in result.output
-        assert "│         foo" in result.output
+    config = get_config()
+    result = runner.invoke(cli, ["remove", "-t", "bar", "some-repo"], obj=config)
+    print(result.output)
+    assert result.exit_code == 2
+    assert "│ Invalid value: Invalid repository type 'bar'. Valid types are:" in result.output
+    assert "│         all" in result.output
+    assert "│         foo" in result.output
 
-        with open("repo-man.cfg") as config_file:
-            assert (
-                config_file.read()
-                == """[foo]
+    with open("repo-man.cfg") as config_file:
+        assert (
+            config_file.read()
+            == """[foo]
 known =
     some-repo
 """
-            )
+        )
 
 
 def test_remove_when_unused_type(
-    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser]
+    runner: testing.CliRunner, get_config: Callable[[], configparser.ConfigParser], tmp_path: Path
 ) -> None:
-    with runner.isolated_filesystem():
-        Path("some-repo").mkdir()
+    repo = tmp_path / "some-repo"
+    repo.mkdir()
+    os.chdir(tmp_path)
 
-        with open("repo-man.cfg", "w") as config_file:
-            config_file.write(
-                """[foo]
+    with open("repo-man.cfg", "w") as config_file:
+        config_file.write(
+            """[foo]
 known =
     some-repo
 
@@ -76,11 +82,9 @@ known =
 known =
     some-other-repo
 """
-            )
-
-        config = get_config()
-        result = runner.invoke(cli, ["remove", "-t", "bar", "some-repo"], obj=config)
-        assert result.exit_code == 1
-        assert (
-            result.output == """Repository 'some-repo' is not configured for type 'bar'. Continue? [y/N]:Aborted.\n """
         )
+
+    config = get_config()
+    result = runner.invoke(cli, ["remove", "-t", "bar", "some-repo"], obj=config)
+    assert result.exit_code == 1
+    assert result.output == """Repository 'some-repo' is not configured for type 'bar'. Continue? [y/N]:Aborted.\n """
